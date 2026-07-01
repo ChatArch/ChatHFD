@@ -1,0 +1,9 @@
+site_name: ChatHFD 文档
+site_url: https://ChatArch.github.io/ChatHFD
+repo_url: https://github.com/ChatArch/ChatHFD
+theme:
+  name: material
+  language: zh
+nav:
+  - 首页: index.md
+  - English: index.en.md

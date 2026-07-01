@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ChatHFD"
+dynamic = ["version"]
+description = "ChatHFD: ChatArch Hugging Face Download tooling package"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = ["click>=8.0", "chatstyle>=0.1.0,<0.2.0", "chatenv>=0.2.0,<0.3.0"]
+authors = [{name = "ChatArch", email = "1073853456@qq.com"}]
+keywords = ["chathfd", "chatarch", "cli"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/ChatArch/ChatHFD"
+Repository = "https://github.com/ChatArch/ChatHFD"
+Documentation = "https://ChatArch.github.io/ChatHFD"
+
+[project.scripts]
+chathfd = "chathfd.cli:main"
+
+[project.entry-points."chatenv.configs"]
+chathfd = "chathfd.config"
+
+[project.optional-dependencies]
+dev = ["build", "pytest", "twine"]
+docs = ["mkdocs>=1.4.0", "mkdocs-material>=9.0.0", "mike>=2.0.0"]
+
+[tool.setuptools.dynamic]
+version = {attr = "chathfd.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools]
+include-package-data = true
