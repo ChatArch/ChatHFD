@@ -5,38 +5,43 @@
     <a href="https://github.com/ChatArch/ChatHFD/actions/workflows/ci.yml">
         <img src="https://github.com/ChatArch/ChatHFD/actions/workflows/ci.yml/badge.svg" alt="Tests" />
     </a>
-    <a href="https://ChatArch.github.io/ChatHFD">
+    <a href="https://arch.gh.wzhecnu.cn/ChatHFD/">
         <img src="https://img.shields.io/badge/docs-mkdocs-blue.svg" alt="Documentation" />
     </a>
 </div>
 
 <div align="center">
 
-[English](README.en.md) | [简体中文](README.md)
+[英文版](README.en.md) | [简体中文](README.md)
 </div>
 
 # ChatHFD
 
-ChatHFD: ChatArch Hugging Face Download tooling package
+ChatHFD 是 ChatArch 的 Hugging Face Download（HFD）工具包入口。当前包保持最小 root-only CLI，用于保留可安装、可发现、可发布的工具壳；实际下载编排能力尚未暴露为子命令。
 
 ## 快速开始
 
 ```bash
-pip install -e ".[dev]"
+pip install ChatHFD
 chathfd --help
 chathfd --version
-python -m pytest -q
-python -m build
+chathfd --tree
 ```
 
-## CLI 规范
+## 当前 CLI 树
 
-这个模板默认依赖 `chatstyle>=0.1.0,<0.2.0` 和 `chatenv>=0.2.0,<0.3.0`，新的命令应优先使用：
+```text
+chathfd  # ChatArch Hugging Face Download tooling entrypoint
+├── --help  # show command help
+├── --version  # show the installed package version
+└── --tree  # show this CLI tree
+```
 
-- `CommandSchema` / `CommandField` 描述输入。
-- `add_interactive_option()` 提供统一 `-i/-I`。
-- `resolve_command_inputs()` 统一缺参补问、默认值、TTY 与校验。
-- 默认生成 `config.py` 和 `chatenv.configs` entry point，使包可被 ChatEnv 发现；只有明确不需要 ChatEnv 接入时才使用 `--without-chatenv-provider`。
+## CLI 边界
+
+- 当前 CLI 只有根选项，没有业务子命令。
+- `--tree` 从实际 Click 命令注册面生成，用来校对 README、文档和测试。
+- 后续新增真实 HFD 下载、镜像、缓存或校验命令时，必须先更新 Click 注册面，再用真实 `chathfd --tree` 同步文档。
 
 ## 目录结构
 
@@ -44,7 +49,7 @@ python -m build
 - `tests/code-tests/`：代码测试和历史测试迁移
 - `tests/cli-tests/`：真实 CLI 测试，doc-first
 - `tests/mock-cli-tests/`：mock/fake CLI 测试，doc-first
-- `docs/`：长期维护文档，由 mkdocs 构建
+- `docs/`：长期维护文档，由 MkDocs 构建
 
 ## 开发说明
 
