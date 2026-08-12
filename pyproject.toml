@@ -20,7 +20,7 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/ChatArch/ChatHFD"
 Repository = "https://github.com/ChatArch/ChatHFD"
-Documentation = "https://ChatArch.github.io/ChatHFD"
+Documentation = "https://arch.gh.wzhecnu.cn/ChatHFD/"
 
 [project.scripts]
 chathfd = "chathfd.cli:main"
@@ -30,7 +30,7 @@ chathfd = "chathfd.config"
 
 [project.optional-dependencies]
 dev = ["build", "pytest", "twine"]
-docs = ["mkdocs>=1.4.0", "mkdocs-material>=9.0.0", "mike>=2.0.0"]
+docs = ["mkdocs>=1.6,<2.0", "mkdocs-material>=9.5,<10.0", "mkdocs-static-i18n>=1.2,<2.0", "mike>=2.0,<3.0"]
 
 [tool.setuptools.dynamic]
 version = {attr = "chathfd.__version__"}
