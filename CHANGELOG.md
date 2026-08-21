@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-08-21 - 0.1.2
+
+### Changed
+
+- Migrated `--tree` and the new `--tree-brief` flag to ChatStyle's shared Click tree runtime with canonical root name `chathfd`.
+- Kept command parameter signatures in the default tree and omitted them in the brief tree while retaining command nodes and descriptions.
+- Updated runtime bounds to `chatstyle>=0.2.0,<0.3.0` and `chatenv>=0.2.10,<0.3.0`.
+- Added detailed and brief tree smoke coverage to package tests and CI.
+
 ## 2026-08-12 - 0.1.1
 
 ### Added

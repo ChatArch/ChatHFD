@@ -26,22 +26,25 @@ pip install ChatHFD
 chathfd --help
 chathfd --version
 chathfd --tree
+chathfd --tree-brief
 ```
 
-## Current CLI Tree
+## Current CLI Tree (`--tree`)
 
 ```text
-chathfd  # ChatArch Hugging Face Download tooling entrypoint
-├── --help  # show command help
-├── --version  # show the installed package version
-└── --tree  # show this CLI tree
+chathfd
+├── --help  # Show this message and exit.
+├── --version  # Show the version and exit.
+├── --tree  # Print the registered CLI tree and exit.
+└── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
 ```
 
 ## CLI Boundary
 
 - The current CLI only exposes root options and has no business subcommands.
-- `--tree` is generated from the real Click command registration and is used to align README, docs, and tests.
-- When real HFD download, mirror, cache, or verification commands are added later, update the Click registration first and then sync docs from the real `chathfd --tree` output.
+- `--tree` and `--tree-brief` are generated from the real registration by ChatStyle's shared Click tree runtime, with `chathfd` fixed as the public root name.
+- `--tree` keeps command parameter signatures by default; `--tree-brief` removes signatures while retaining command nodes and descriptions. With no parameterized subcommands yet, both modes show the same root-only nodes.
+- When real HFD download, mirror, cache, or verification commands are added later, update the Click registration first and then sync docs from both real tree modes.
 
 ## Layout
 

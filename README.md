@@ -26,22 +26,25 @@ pip install ChatHFD
 chathfd --help
 chathfd --version
 chathfd --tree
+chathfd --tree-brief
 ```
 
-## 当前 CLI 树
+## 当前 CLI 树（`--tree`）
 
 ```text
-chathfd  # ChatArch Hugging Face Download tooling entrypoint
-├── --help  # show command help
-├── --version  # show the installed package version
-└── --tree  # show this CLI tree
+chathfd
+├── --help  # Show this message and exit.
+├── --version  # Show the version and exit.
+├── --tree  # Print the registered CLI tree and exit.
+└── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
 ```
 
 ## CLI 边界
 
 - 当前 CLI 只有根选项，没有业务子命令。
-- `--tree` 从实际 Click 命令注册面生成，用来校对 README、文档和测试。
-- 后续新增真实 HFD 下载、镜像、缓存或校验命令时，必须先更新 Click 注册面，再用真实 `chathfd --tree` 同步文档。
+- `--tree` 和 `--tree-brief` 由 ChatStyle 共享 Click tree runtime 从实际注册面生成，公开根名固定为 `chathfd`。
+- `--tree` 默认保留命令参数签名；`--tree-brief` 省略参数签名，但保留命令节点和描述。当前没有参数化子命令，因此两种模式显示同一组 root-only 节点。
+- 后续新增真实 HFD 下载、镜像、缓存或校验命令时，必须先更新 Click 注册面，再用真实 `chathfd --tree` 和 `chathfd --tree-brief` 同步文档。
 
 ## 目录结构
 
