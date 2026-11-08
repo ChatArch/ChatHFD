@@ -1,33 +1,36 @@
 <div align="center">
-    <a href="https://pypi.python.org/pypi/ChatHFD">
-        <img src="https://img.shields.io/pypi/v/ChatHFD.svg" alt="PyPI version" />
-    </a>
-    <a href="https://github.com/ChatArch/ChatHFD/actions/workflows/ci.yml">
-        <img src="https://github.com/ChatArch/ChatHFD/actions/workflows/ci.yml/badge.svg" alt="Tests" />
-    </a>
-    <a href="https://arch.gh.wzhecnu.cn/ChatHFD/">
-        <img src="https://img.shields.io/badge/docs-mkdocs-blue.svg" alt="Documentation" />
-    </a>
+    <a href="https://pypi.python.org/pypi/ChatHFD"><img src="https://img.shields.io/pypi/v/ChatHFD.svg" alt="PyPI version" /></a>
+    <a href="https://github.com/ChatArch/ChatHFD/actions/workflows/ci.yml"><img src="https://github.com/ChatArch/ChatHFD/actions/workflows/ci.yml/badge.svg" alt="Tests" /></a>
 </div>
 
-<div align="center">
-
-[英文版](README.en.md) | [简体中文](README.md)
-</div>
+<div align="center">[英文版](README.en.md) | [简体中文](README.md)</div>
 
 # ChatHFD
 
-ChatHFD 是 ChatArch 的 Hugging Face Download（HFD）工具包入口。当前包保持最小 root-only CLI，用于保留可安装、可发现、可发布的工具壳；实际下载编排能力尚未暴露为子命令。
+ChatHFD 是 ChatArch 的 Hugging Face 模型与数据集下载工具。要求 Python 3.10+ 和 `aria2c`；只支持公开仓库，不在命令行传递 Token。
 
-## 快速开始
+## 下载示例
 
 ```bash
-pip install ChatHFD
-chathfd --help
-chathfd --version
+pip install ChatHFD==0.1.3
 chathfd --tree
-chathfd --tree-brief
+chathfd setup  # 检查 aria2c；未安装时提示命令
+# 如确需安装：chathfd setup --install（还需确认）
+# 先预检最新 Qwen 通用开放权重系列（此仓库约 360 GB，不要直接全量下载）
+chathfd download Qwen/Qwen3.8-Flash-Next --include config.json --dry-run
+chathfd download Qwen/Qwen3.8-Flash-Next --include config.json --local-dir ./models/qwen-sample
+# 数学数据集：约 246 KB，包含 README、元数据和一个 Parquet 分片
+chathfd download MathArena/arxivmath-0926 --repo-type dataset --dry-run
+chathfd download MathArena/arxivmath-0926 --repo-type dataset --local-dir ./datasets/arxivmath-0926
 ```
+
+默认端点为 `https://hf-mirror.com`；`HF_ENDPOINT` 环境变量或 `--endpoint` 可覆盖为其它 Hugging Face 兼容 HTTPS 端点（如 `https://huggingface.co`）。使用 `--include` / `--exclude`（可重复）筛选仓库路径，`--revision` 固定版本，`--jobs`（默认 5）控制并发文件数，`--connections`（默认 4）控制每文件连接数。下载通过 aria2 续传，完成后只核对文件大小，不做加密哈希校验。若已有文件大小不匹配且无 aria2 续传状态，命令会报错而不会删除它。
+
+默认最多选择 10 GiB 文件；如确需更大的全量权重，先看 `--dry-run` 的大小与磁盘空间，再明确使用 `--allow-large`。元数据响应的 commit SHA 会固定到下载 URL，目标目录也记录仓库、commit 和选中文件集合；再次运行同一集合可续传，分支更新、选中文件集合改变或目标目录已有未知文件时应另选目录。10 GiB 是元数据预检，不是服务器返回字节数的硬上限。`--dry-run` 不创建目标文件，即使超过 10 GiB 仍可预览。默认目录为 `./models/<org>/<repo>` 或 `./datasets/<org>/<repo>`。
+
+ModelScope 是独立仓库平台，不是 HF-Mirror 的 `HF_ENDPOINT` 替代地址；仅当该模型/数据集也在 ModelScope 发布时，另用其 SDK，例如 `modelscope download --model Qwen/Qwen2.5-0.5B-Instruct --local_dir ./model`。不能假定 HF 仓库 ID 在 ModelScope 同步存在，也不能把其 SDK 当作本命令的自动回退。
+
+参考：[HF-Mirror 下载说明](https://hf-mirror.com/) · [ModelScope CLI](https://www.modelscope.cn/docs/sdk/cli) · [Qwen 模型](https://huggingface.co/Qwen/Qwen3.8-Flash-Next) · [MathArena 数据集](https://huggingface.co/datasets/MathArena/arxivmath-0926)。
 
 ## 当前 CLI 树（`--tree`）
 
@@ -36,24 +39,9 @@ chathfd
 ├── --help  # Show this message and exit.
 ├── --version  # Show the version and exit.
 ├── --tree  # Print the registered CLI tree and exit.
-└── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
+├── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
+├── download <REPO-ID> [--repo-type REPO-TYPE] [--revision REVISION] [--endpoint ENDPOINT] [--local-dir LOCAL-DIR] [--include INCLUDE] [--exclude EXCLUDE] [--connections CONNECTIONS] [--jobs JOBS] [--dry-run] [--allow-large]  # Download a public model or dataset with aria2c.
+└── setup [--install]  # Check the aria2c download engine and offer installation.
 ```
 
-## CLI 边界
-
-- 当前 CLI 只有根选项，没有业务子命令。
-- `--tree` 和 `--tree-brief` 由 ChatStyle 共享 Click tree runtime 从实际注册面生成，公开根名固定为 `chathfd`。
-- `--tree` 默认保留命令参数签名；`--tree-brief` 省略参数签名，但保留命令节点和描述。当前没有参数化子命令，因此两种模式显示同一组 root-only 节点。
-- 后续新增真实 HFD 下载、镜像、缓存或校验命令时，必须先更新 Click 注册面，再用真实 `chathfd --tree` 和 `chathfd --tree-brief` 同步文档。
-
-## 目录结构
-
-- `src/`：包源码
-- `tests/code-tests/`：代码测试和历史测试迁移
-- `tests/cli-tests/`：真实 CLI 测试，doc-first
-- `tests/mock-cli-tests/`：mock/fake CLI 测试，doc-first
-- `docs/`：长期维护文档，由 MkDocs 构建
-
-## 开发说明
-
-扩展脚手架前，先阅读 `DEVELOP.md` 和 `AGENTS.md`。
+`--tree-brief` 省略子命令参数签名。`src/` 是源码；`tests/cli-tests/` 是真实 CLI 测试；`tests/mock-cli-tests/` 是模拟测试；`docs/` 是长期文档。扩展前请阅读 `DEVELOP.md` 和 `AGENTS.md`。

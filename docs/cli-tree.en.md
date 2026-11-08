@@ -1,27 +1,26 @@
 # CLI Tree
 
-`ChatHFD` is currently a root-only CLI. This page must stay synchronized from the real `chathfd --tree` output and must not invent future commands. ChatStyle's shared Click tree runtime fixes the public root name as `chathfd`.
+This page mirrors the real `chathfd --tree` output. ChatStyle fixes the public root name to `chathfd`; `--tree-brief` only omits command parameter signatures.
 
 ```text
 chathfd
 ├── --help  # Show this message and exit.
 ├── --version  # Show the version and exit.
 ├── --tree  # Print the registered CLI tree and exit.
-└── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
+├── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
+├── download <REPO-ID> [--repo-type REPO-TYPE] [--revision REVISION] [--endpoint ENDPOINT] [--local-dir LOCAL-DIR] [--include INCLUDE] [--exclude EXCLUDE] [--connections CONNECTIONS] [--jobs JOBS] [--dry-run] [--allow-large]  # Download a public model or dataset with aria2c.
+└── setup [--install]  # Check the aria2c download engine and offer installation.
 ```
 
-`--tree` keeps command parameter signatures by default; `--tree-brief` removes signatures while retaining command nodes and descriptions. With no parameterized subcommands yet, both modes show the same root-only nodes.
+The command line in `chathfd --tree-brief` is:
 
-## Current Status
+```text
+├── download  # Download a public model or dataset with aria2c.
+└── setup  # Check the aria2c download engine and offer installation.
+```
 
-| Entry | Status | Notes |
-| --- | --- | --- |
-| `chathfd --help` | Implemented | Shows root command help. |
-| `chathfd --version` | Implemented | Shows the installed package version. |
-| `chathfd --tree` | Implemented | Shows the current real CLI tree with command parameter signatures. |
-| `chathfd --tree-brief` | Implemented | Shows the current real CLI tree without command parameter signatures. |
-| HFD download subcommands | Not implemented | Add them only after real download orchestration exists. |
+## Download boundary
 
-## Update Rule
+`setup` checks for `aria2c` and suggests a package-manager command if missing; `setup --install` requires explicit confirmation before attempting installation. `download` supports public Hugging Face models and datasets (`--repo-type dataset`). The default endpoint is `https://hf-mirror.com`; `HF_ENDPOINT` or `--endpoint` overrides it. Select files with `--include` / `--exclude`, preview with `--dry-run`, and opt in to selections over 10 GiB with `--allow-large`. `--jobs` controls concurrent files and `--connections` connections per file. Verification is by size only; gated/private tokens are not supported. See the [repository README](https://github.com/ChatArch/ChatHFD/blob/main/README.en.md#examples) for examples and the ModelScope distinction.
 
-When real commands are added, update the Click registration and tests first, then run `chathfd --tree` and `chathfd --tree-brief` to refresh README and this page.
+When updating the CLI, change Click registration and tests first, then rerun `chathfd --tree` and `chathfd --tree-brief` to refresh this page and the README.

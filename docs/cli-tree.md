@@ -1,27 +1,26 @@
 # CLI 树
 
-`ChatHFD` 当前是 root-only CLI。这个页面必须从真实 `chathfd --tree` 输出同步，不能手写未来命令。ChatStyle 共享 Click tree runtime 将公开根名固定为 `chathfd`。
+此页基于真实 `chathfd --tree` 输出。ChatStyle 将公开根名固定为 `chathfd`；`--tree-brief` 只省略子命令参数签名。
 
 ```text
 chathfd
 ├── --help  # Show this message and exit.
 ├── --version  # Show the version and exit.
 ├── --tree  # Print the registered CLI tree and exit.
-└── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
+├── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
+├── download <REPO-ID> [--repo-type REPO-TYPE] [--revision REVISION] [--endpoint ENDPOINT] [--local-dir LOCAL-DIR] [--include INCLUDE] [--exclude EXCLUDE] [--connections CONNECTIONS] [--jobs JOBS] [--dry-run] [--allow-large]  # Download a public model or dataset with aria2c.
+└── setup [--install]  # Check the aria2c download engine and offer installation.
 ```
 
-`--tree` 默认保留命令参数签名；`--tree-brief` 省略参数签名，同时保留命令节点和描述。当前没有参数化子命令，因此两种模式显示同一组 root-only 节点。
+`chathfd --tree-brief` 的子命令行：
 
-## 当前状态
+```text
+├── download  # Download a public model or dataset with aria2c.
+└── setup  # Check the aria2c download engine and offer installation.
+```
 
-| 入口 | 状态 | 说明 |
-| --- | --- | --- |
-| `chathfd --help` | 已实现 | 显示根命令帮助。 |
-| `chathfd --version` | 已实现 | 显示已安装包版本。 |
-| `chathfd --tree` | 已实现 | 显示带命令参数签名的当前真实 CLI 树。 |
-| `chathfd --tree-brief` | 已实现 | 显示省略命令参数签名的当前真实 CLI 树。 |
-| HFD 下载子命令 | 尚未实现 | 未来有实际下载编排能力后再加入 CLI。 |
+## 下载边界
 
-## 更新规则
+`setup` 检查本机 `aria2c`，缺失时给出安装指引；`setup --install` 需再次确认才会尝试安装。`download` 支持公开 Hugging Face 模型和 `--repo-type dataset` 数据集；默认 `https://hf-mirror.com`，可用 `HF_ENDPOINT` / `--endpoint` 覆盖。`--include` / `--exclude` 限定文件，`--dry-run` 预检大小，超过 10 GiB 需要 `--allow-large`。`--jobs` 和 `--connections` 分别设置并发文件数和每文件连接数。只按大小校验，不支持 gated/private 仓库 Token。完整示例与 ModelScope 区别见[仓库 README](https://github.com/ChatArch/ChatHFD#下载示例)。
 
-新增真实命令时，先更新 Click 注册面和测试，再运行 `chathfd --tree` 和 `chathfd --tree-brief` 回填 README 与本页。
+更新 CLI 时先更新 Click 注册面及测试，再运行真实 `chathfd --tree` 和 `chathfd --tree-brief` 回填本页及 README。

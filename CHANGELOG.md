@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-11-08 - 0.1.3
+
+### Added
+
+- Added `chathfd download` for public Hugging Face models and datasets with HF-Mirror default, selection preflight, aria2 concurrency/resume, dry-run, and an explicit 10 GiB size gate.
+- Added `chathfd setup` to detect aria2c, suggest installation commands, and offer a confirmed `--install` path.
+
+### Changed
+
+- Updated both CLI tree modes, bilingual docs and tests to reflect the real command surface. ModelScope is documented as a separate repository rather than an interchangeable mirror.
+
 ## 2026-08-21 - 0.1.2
 
 ### Changed

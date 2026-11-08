@@ -1,6 +1,6 @@
 # ChatHFD 文档
 
-ChatHFD 是 ChatArch 的 Hugging Face Download（HFD）工具包入口。当前文档记录已实现 CLI 和后续扩展边界。
+ChatHFD 使用 HF-Mirror 和 aria2c 下载公开 Hugging Face 模型与数据集。先通过 `setup` 检查下载引擎，再通过 `download --dry-run` 预检文件和大小。
 
 <div class="grid cards" markdown>
 
@@ -8,15 +8,15 @@ ChatHFD 是 ChatArch 的 Hugging Face Download（HFD）工具包入口。当前�
 
     ---
 
-    查看当前真实命令入口、root-only 边界和更新规则。
+    查看 `setup`、`download` 的真实参数和安全边界。
 
     [查看 CLI 树](cli-tree.md)
 
--   :material-package-variant: **包边界**
+-   :material-package-variant: **下载模型与数据集**
 
     ---
 
-    当前包保持可安装、可测试、可发布的工具壳；实际下载编排命令尚未暴露。
+    [README 示例](https://github.com/ChatArch/ChatHFD#下载示例) 展示 Qwen 模型的小型配置文件和 MathArena 数学数据集；默认源为 HF-Mirror，超过 10 GiB 需明确放行。
 
 </div>
 
