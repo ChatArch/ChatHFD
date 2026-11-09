@@ -48,7 +48,7 @@ chathfd download [REPO_ID] [OPTIONS] [-i|-I]
 | `--repo-type [model|dataset]` | `model` | Repository type |
 | `--revision TEXT` | `main` | Branch, tag or commit |
 | `--endpoint TEXT` | `HF_ENDPOINT` or HF-Mirror | Compatible HTTPS origin; explicit option wins |
-| `--local-dir DIRECTORY` | Current-directory `models/` or `datasets/` + repo ID | Selected file output root |
+| `--local-dir DIRECTORY` | Configured root + repo ID; root defaults to cwd | Explicit value is the exact final directory, no repo suffix; see ChatEnv settings |
 | `--include TEXT` | All files | Repeatable include glob |
 | `--exclude TEXT` | None | Repeatable exclude glob |
 | `--connections INTEGER` | `4`, range 1–10 | Connections/splits per file |
@@ -65,6 +65,8 @@ Automatic prompting requires both input and output to be TTYs and `CHATARCH_AUTO
 chathfd download Qwen/Qwen3.8-Flash-Next --include config.json --dry-run
 chathfd download MathArena/arxivmath-0926 --repo-type dataset --dry-run
 ```
+
+Directory precedence is `--local-dir` > process `CHATHFD_DOWNLOAD_ROOT` > active ChatEnv profile > cwd. A root and a final directory are different: see [root configuration](configuration.md#download-root) for manual commands.
 
 ## Engine preparation {#setup}
 

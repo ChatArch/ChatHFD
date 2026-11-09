@@ -25,7 +25,7 @@ Version0.1.5 opts `download` into ChatStyle shared input resolution and type val
 ## Examples
 
 ```bash
-pip install ChatHFD==0.1.5
+pip install ChatHFD==0.1.6
 chathfd --tree
 chathfd setup  # Check aria2c; if missing, show installation guidance
 # To install explicitly: chathfd setup --install (requires confirmation)
@@ -39,7 +39,7 @@ chathfd download MathArena/arxivmath-0926 --repo-type dataset --local-dir ./data
 
 The default endpoint is `https://hf-mirror.com`. Override with `HF_ENDPOINT` or `--endpoint` for another Hugging Face-compatible HTTPS origin, such as `https://huggingface.co`. Repeat `--include` / `--exclude` to select repository paths, pin `--revision`, set `--jobs` (5 concurrent files by default) and `--connections` (4 connections per file by default). aria2 provides resume support. Completion checks file sizes, not cryptographic hashes. A pre-existing wrong-size file without aria2 state is rejected, not deleted.
 
-Selections over 10 GiB require an explicit `--allow-large` after reviewing `--dry-run` and free space. Download URLs are pinned to the metadata response's commit SHA; the destination records the repository, commit, and selected file set. Rerunning the same set can resume, but a moved branch, changed selected set or unknown pre-existing files require a fresh destination. The 10 GiB gate is metadata preflight, not a hard limit on bytes sent by a server. Dry-run previews even oversized selections without creating destination files. The default destination is `./models/<org>/<repo>` or `./datasets/<org>/<repo>`.
+Selections over 10 GiB require an explicit `--allow-large` after reviewing `--dry-run` and free space. Download URLs are pinned to the metadata response's commit SHA; the destination records the repository, commit, and selected file set. Rerunning the same set can resume, but a moved branch, changed selected set or unknown pre-existing files require a fresh destination. The 10 GiB gate is metadata preflight, not a hard limit on bytes sent by a server. Dry-run previews even oversized selections without creating destination files. From0.1.6 the default root is the invocation directory and output is `./<org>/<repo>`, without models/datasets. `CHATHFD_DOWNLOAD_ROOT` in the process or active ChatEnv profile changes the root; `--local-dir` overrides the exact final directory.
 
 ModelScope is a separate repository/SDK, not a drop-in replacement for `HF_ENDPOINT`. If the content is independently published there, use its CLI, e.g. `modelscope download --model Qwen/Qwen2.5-0.5B-Instruct --local_dir ./model`. Do not assume the same HF repo ID exists on ModelScope; this command does not silently fall back to it.
 

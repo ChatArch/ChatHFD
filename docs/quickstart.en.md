@@ -43,7 +43,7 @@ Start with a small selection to check the engine, endpoint and destination befor
 Use your own Python virtual environment instead of modifying system Python:
 
 ```bash
-python -m pip install ChatHFD==0.1.5
+python -m pip install ChatHFD==0.1.6
 chathfd --version
 chathfd --tree
 chathfd setup
@@ -66,6 +66,8 @@ chathfd download Qwen/Qwen3.8-Flash-Next \
 ```
 
 Output includes the repository type, requested revision, pinned commit, selected files, byte counts and destination. Dry-run does not create a download directory and does not require aria2c to be installed.
+
+From0.1.6 the root defaults to the invocation cwd, with output in `./<organization>/<repository>` and no models/datasets layer. Optional `CHATHFD_DOWNLOAD_ROOT` supports process env and the active ChatEnv profile; `--local-dir` is an exact final directory. Shared-storage settings are never written automatically. See [download-root settings](configuration.md#download-root) for manual setup and precedence.
 
 ### Manual input and scripts
 

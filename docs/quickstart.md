@@ -43,7 +43,7 @@
 在自己的 Python 虚拟环境中安装，不需要修改系统 Python：
 
 ```bash
-python -m pip install ChatHFD==0.1.5
+python -m pip install ChatHFD==0.1.6
 chathfd --version
 chathfd --tree
 chathfd setup
@@ -66,6 +66,8 @@ chathfd download Qwen/Qwen3.8-Flash-Next \
 ```
 
 输出包含仓库类型、请求版本、固定 commit、选中文件、字节数和目标路径。`--dry-run` 不创建下载目录，也不要求 aria2c 已安装。
+
+从0.1.6起，默认根目录是命令执行时的当前目录，仓库放在`./<组织>/<仓库>`，不再套models/datasets。可选`CHATHFD_DOWNLOAD_ROOT`支持进程变量及ChatEnv活动profile，`--local-dir`则是精确最终目录；不会自动写入共享盘配置。手动设置和优先级见[下载根目录](configuration.md#download-root)。
 
 ### 人工输入与脚本
 

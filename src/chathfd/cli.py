@@ -33,7 +33,7 @@ def _patterns(value: str | tuple[str, ...]) -> tuple[str, ...]:
 @click.option("--repo-type", type=click.Choice(["model", "dataset"]), default=None, show_default="model")
 @click.option("--revision", default=None, show_default="main", help="Branch, tag or commit.")
 @click.option("--endpoint", default=None, show_default="HF_ENDPOINT or https://hf-mirror.com", help="Hugging Face-compatible HTTPS origin.")
-@click.option("--local-dir", type=click.Path(path_type=Path, file_okay=False), help="Destination (default: ./models or ./datasets / repo ID).")
+@click.option("--local-dir", type=click.Path(path_type=Path, file_okay=False), help="Exact final directory. Default: CHATHFD_DOWNLOAD_ROOT / repo ID; root from process env, ChatEnv profile or cwd.")
 @click.option("--include", multiple=True, help="Glob pattern to include (repeatable).")
 @click.option("--exclude", multiple=True, help="Glob pattern to exclude (repeatable).")
 @click.option("--connections", type=click.IntRange(1, 10), default=None, show_default="4", help="Connections per file for aria2c.")
@@ -47,7 +47,14 @@ def download(
     dry_run: bool | None, allow_large: bool | None, interactive: bool | None,
 ) -> None:
     """Download a public model or dataset with aria2c."""
-    from chathfd.download import DEFAULT_ENDPOINT, _endpoint, download_repo
+    from chathfd.download import DEFAULT_ENDPOINT, _endpoint, download_repo, resolve_download_directory
+
+    missing_repo = repo_id is None
+    repo_id = resolve_command_inputs(
+        schema=CommandSchema("download", (CommandField("repo_id", "Repository ID (owner/name)", required=True),)),
+        provided={"repo_id": repo_id}, interactive=interactive,
+        usage="Usage: chathfd download [REPO_ID] [OPTIONS] [-i|-I]",
+    )["repo_id"]
 
     schema = CommandSchema("download", fields=(
         CommandField("repo_id", "Repository ID (owner/name)", required=True),
@@ -55,7 +62,7 @@ def download(
                      param_type=click.Choice(("model", "dataset"))),
         CommandField("revision", "Revision", default="main", prompt_if_missing=interactive is True),
         CommandField("endpoint", "HTTPS Hub endpoint", default_factory=lambda: _endpoint(os.environ.get("HF_ENDPOINT") or DEFAULT_ENDPOINT), prompt_if_missing=interactive is True),
-        CommandField("local_dir", "Destination directory (empty for repo default)", kind="path", prompt_if_missing=interactive is True,
+        CommandField("local_dir", "Destination directory", kind="path", default_factory=lambda: resolve_download_directory(repo_id), prompt_if_missing=interactive is True,
                      param_type=click.Path(path_type=Path, file_okay=False)),
         CommandField("include", "Include globs (comma separated; empty for all)", normalizer=_patterns, prompt_if_missing=interactive is True),
         CommandField("exclude", "Exclude globs (comma separated; empty for none)", normalizer=_patterns, prompt_if_missing=interactive is True),
@@ -73,7 +80,7 @@ def download(
         usage="Usage: chathfd download [REPO_ID] [OPTIONS] [-i|-I]",
     )
     destination = Path(values["local_dir"]) if values["local_dir"] else None
-    manual = interactive is True or (repo_id is None and interactive is not False)
+    manual = interactive is True or (missing_repo and interactive is not False)
     confirm = (lambda files, total: ask_confirm(f"Download {files} files ({total} bytes)?", default=False)) if manual else None
     download_repo(
         values["repo_id"], values["repo_type"], values["revision"], values["endpoint"], destination,

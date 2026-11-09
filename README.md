@@ -25,7 +25,7 @@ ChatHFD 是 ChatArch 的 Hugging Face 模型与数据集下载工具。要求 Py
 ## 下载示例
 
 ```bash
-pip install ChatHFD==0.1.5
+pip install ChatHFD==0.1.6
 chathfd --tree
 chathfd setup  # 检查 aria2c；未安装时提示命令
 # 如确需安装：chathfd setup --install（还需确认）
@@ -39,7 +39,7 @@ chathfd download MathArena/arxivmath-0926 --repo-type dataset --local-dir ./data
 
 默认端点为 `https://hf-mirror.com`；`HF_ENDPOINT` 环境变量或 `--endpoint` 可覆盖为其它 Hugging Face 兼容 HTTPS 端点（如 `https://huggingface.co`）。使用 `--include` / `--exclude`（可重复）筛选仓库路径，`--revision` 固定版本，`--jobs`（默认 5）控制并发文件数，`--connections`（默认 4）控制每文件连接数。下载通过 aria2 续传，完成后只核对文件大小，不做加密哈希校验。若已有文件大小不匹配且无 aria2 续传状态，命令会报错而不会删除它。
 
-默认最多选择 10 GiB 文件；如确需更大的全量权重，先看 `--dry-run` 的大小与磁盘空间，再明确使用 `--allow-large`。元数据响应的 commit SHA 会固定到下载 URL，目标目录也记录仓库、commit 和选中文件集合；再次运行同一集合可续传，分支更新、选中文件集合改变或目标目录已有未知文件时应另选目录。10 GiB 是元数据预检，不是服务器返回字节数的硬上限。`--dry-run` 不创建目标文件，即使超过 10 GiB 仍可预览。默认目录为 `./models/<org>/<repo>` 或 `./datasets/<org>/<repo>`。
+默认最多选择 10 GiB 文件；如确需更大的全量权重，先看 `--dry-run` 的大小与磁盘空间，再明确使用 `--allow-large`。元数据响应的 commit SHA 会固定到下载 URL，目标目录也记录仓库、commit 和选中文件集合；再次运行同一集合可续传，分支更新、选中文件集合改变或目标目录已有未知文件时应另选目录。10 GiB 是元数据预检，不是服务器返回字节数的硬上限。`--dry-run` 不创建目标文件，即使超过 10 GiB 仍可预览。从0.1.6起默认根目录是当前目录，最终路径为`./<org>/<repo>`（不再加models/datasets层）。可用`CHATHFD_DOWNLOAD_ROOT`进程变量或ChatEnv活动profile配置根目录；`--local-dir`始终指定最终目录并优先覆盖。
 
 ModelScope 是独立仓库平台，不是 HF-Mirror 的 `HF_ENDPOINT` 替代地址；仅当该模型/数据集也在 ModelScope 发布时，另用其 SDK，例如 `modelscope download --model Qwen/Qwen2.5-0.5B-Instruct --local_dir ./model`。不能假定 HF 仓库 ID 在 ModelScope 同步存在，也不能把其 SDK 当作本命令的自动回退。
 

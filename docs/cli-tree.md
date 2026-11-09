@@ -48,7 +48,7 @@ chathfd download [REPO_ID] [OPTIONS] [-i|-I]
 | `--repo-type [model|dataset]` | `model` | 仓库类型 |
 | `--revision TEXT` | `main` | 分支、标签或 commit |
 | `--endpoint TEXT` | `HF_ENDPOINT` 或 HF-Mirror | 兼容 HTTPS origin；显式选项优先 |
-| `--local-dir DIRECTORY` | 当前目录下 `models/` 或 `datasets/` + repo ID | 所选文件的输出根 |
+| `--local-dir DIRECTORY` | 配置根目录 + repo ID，根默认当前目录 | 显式值是精确最终目录，不追加repo ID；见ChatEnv配置 |
 | `--include TEXT` | 不限制 | 可重复的包含 glob |
 | `--exclude TEXT` | 无 | 可重复的排除 glob |
 | `--connections INTEGER` | `4`，范围 1–10 | 每个文件的连接/分片数 |
@@ -65,6 +65,8 @@ chathfd download [REPO_ID] [OPTIONS] [-i|-I]
 chathfd download Qwen/Qwen3.8-Flash-Next --include config.json --dry-run
 chathfd download MathArena/arxivmath-0926 --repo-type dataset --dry-run
 ```
+
+目录优先级为`--local-dir` > 进程`CHATHFD_DOWNLOAD_ROOT` > ChatEnv活动profile > 当前目录。根目录与最终目录含义不同；根目录配置及手动命令见[下载配置](configuration.md#download-root)。
 
 ## 下载器准备 {#setup}
 

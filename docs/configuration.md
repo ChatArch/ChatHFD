@@ -45,6 +45,30 @@ chathfd download Qwen/Qwen3.8-Flash-Next --endpoint https://huggingface.co --inc
 
 ModelScope 不是兼容的 `HF_ENDPOINT` 替换地址。它有独立的仓库 ID、发布状态与 SDK；当前 ChatHFD 没有 ModelScope 后端。也不要用旧的 Token 参数为当前下载器添加认证。
 
+## ChatEnv下载根目录 {#download-root}
+
+从0.1.6起，`CHATHFD_DOWNLOAD_ROOT`是非敏感的下载根目录，默认`.`，在每次调用时按当前目录解析。模型和数据集统一放在`<根目录>/<组织>/<仓库>`，不再额外创建models/datasets层；支持相对路径和`~`。根目录不自动推断另一台机器的挂载路径。
+
+| 来源 | 优先级 | 路径含义 |
+| --- | --- | --- |
+| `--local-dir` / Python `local_dir` | 最高 | 精确最终目录，不追加repo ID；覆盖无效的低优先级配置 |
+| 进程 `CHATHFD_DOWNLOAD_ROOT` | 其次 | 根目录，追加repo ID；空字符串显式回退当前目录 |
+| ChatEnv活动profile同名字段 | 其次 | 同一根目录规则 |
+| 默认`.` | 最后 | 当前目录下`<组织>/<仓库>`，不是安装目录 |
+
+在安装ChatHFD的同一个Python环境运行ChatEnv（其他环境可能发现不了此provider）：
+
+```bash
+chatenv set CHATHFD_DOWNLOAD_ROOT=/data/hub -I
+chatenv list -t chathfd
+chatenv test -t chathfd -I
+CHATHFD_DOWNLOAD_ROOT=./cache chathfd download Qwen/Qwen3.8-Flash-Next --include config.json --dry-run -I
+```
+
+配置使用原`chathfd` provider和`Chathfd`存储命名空间，不另建目录/解析器。普通下载只读配置，不自动保存变量；`chatenv test`只验证有效根目录，不创建目录、不请求网络。`-i`会在目标目录提示中显示本次有效的最终默认路径。共享存储要填本机已可访问的目录，而不是NFS的`server:/export`字符串；先确认服务端与客户端路径视角，不由工具重挂载或猜测。模型/数据集需分开放置时，按用途选活动profile、单次进程变量或`--local-dir`。
+
+0.1.5及更早版本曾使用`./models/<repo_id>`与`./datasets/<repo_id>`；新布局不会迁移旧数据，显式`--local-dir`语义不变。模板遗留的`CHATHFD_API_KEY`仍不用于公开下载，无需填写。
+
 ## 文件筛选与并发 {#selection}
 
 ```bash
@@ -61,7 +85,7 @@ chathfd download Qwen/Qwen3.8-Flash-Next \
 
 ## 目录与续传身份 {#resume}
 
-不传 `--local-dir` 时，模型写到 `./models/<org>/<repo>`，数据集写到 `./datasets/<org>/<repo>`；相对目录以命令启动位置为准。它不是 Hugging Face 标准缓存布局，也不会自动采用另一台机器的共享盘路径。
+不传`--local-dir`时使用上面的根目录优先级，最终为`<download-root>/<repo_id>`。根目录本身可为用户选择的目录别名，但仓库层级的符号链接不能逃逸配置根；显式最终目录保留用户覆盖语义。这不是Hugging Face标准缓存布局，也不会自动采用另一台机器的共享盘路径。
 
 下载目录中生成：
 
