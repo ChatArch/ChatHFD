@@ -505,6 +505,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="2. 只预检，不下载">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        人工输入与脚本
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -541,7 +558,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         下一步
@@ -958,6 +975,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="2. 只预检，不下载">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        人工输入与脚本
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -994,7 +1028,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         下一步
@@ -1056,7 +1090,7 @@
 </div>
 <h2 id="install">1. 安装与检查</h2>
 <p>在自己的 Python 虚拟环境中安装，不需要修改系统 Python：</p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">ChatHFD</span><span class="o">==</span><span class="m">0</span>.1.4
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">ChatHFD</span><span class="o">==</span><span class="m">0</span>.1.5
 chathfd<span class="w"> </span>--version
 chathfd<span class="w"> </span>--tree
 chathfd<span class="w"> </span>setup
@@ -1071,6 +1105,14 @@ chathfd<span class="w"> </span>setup
 <span class="w">  </span>--dry-run
 </code></pre></div>
 <p>输出包含仓库类型、请求版本、固定 commit、选中文件、字节数和目标路径。<code>--dry-run</code> 不创建下载目录，也不要求 aria2c 已安装。</p>
+<h3 id="_2">人工输入与脚本</h3>
+<p>从0.1.5起可在终端运行 <code>chathfd download -i</code>，按提示输入仓库、类型、目录、过滤和并发等；交互下载会先列出文件与总量，确认后才传输。只想预检时显式传 <code>--dry-run</code>。缺少仓库 ID 时，若输入/输出都是 TTY 且 <code>CHATARCH_AUTO_PROMPT</code> 未关闭，也只会自动询问仓库 ID，后续沿用默认值。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 人工逐项填写（真正传输前还需确认）</span>
+chathfd<span class="w"> </span>download<span class="w"> </span>-i
+<span class="c1"># CI/脚本：禁止提问，但 -I 本身不是 dry-run</span>
+chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flash-Next<span class="w"> </span>--include<span class="w"> </span>config.json<span class="w"> </span>--dry-run<span class="w"> </span>-I
+</code></pre></div>
+<p><code>-I</code> 缺仓库 ID 时直接失败；<code>-i</code> 没有 TTY 时也直接失败。若要屏蔽自动提问，设置 <code>CHATARCH_AUTO_PROMPT=0</code>。此交互功能从0.1.5起提供，范围/选择/路径转换由ChatStyle0.2.1统一校验。</p>
 <h2 id="model">3. 下载模型配置文件</h2>
 <div class="highlight"><pre><span></span><code>chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flash-Next<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--include<span class="w"> </span><span class="s1">'config.json'</span><span class="w"> </span><span class="se">\</span>
@@ -1097,7 +1139,7 @@ chathfd<span class="w"> </span>download<span class="w"> </span>MathArena/arxivma
 chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flash-Next<span class="w"> </span>--dry-run
 </code></pre></div>
 <p>查看完整模型仓库时不要把小样例的下载量当成权重总量。先核对磁盘、带宽和模型许可；必要时用 <code>--include '*.safetensors'</code> 等模式缩小范围。若所选文件超过 10 GiB，实际传输需明确加 <code>--allow-large</code>；本页不自动启动大规模下载。</p>
-<h2 id="_2">下一步</h2>
+<h2 id="_3">下一步</h2>
 <table>
 <thead>
 <tr>

@@ -505,6 +505,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="2. Preview without transfer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manual-input-and-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual input and scripts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -958,6 +975,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="2. Preview without transfer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manual-input-and-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual input and scripts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1056,7 +1090,7 @@
 </div>
 <h2 id="install">1. Install and check</h2>
 <p>Use your own Python virtual environment instead of modifying system Python:</p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">ChatHFD</span><span class="o">==</span><span class="m">0</span>.1.4
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">ChatHFD</span><span class="o">==</span><span class="m">0</span>.1.5
 chathfd<span class="w"> </span>--version
 chathfd<span class="w"> </span>--tree
 chathfd<span class="w"> </span>setup
@@ -1071,6 +1105,14 @@ chathfd<span class="w"> </span>setup
 <span class="w">  </span>--dry-run
 </code></pre></div>
 <p>Output includes the repository type, requested revision, pinned commit, selected files, byte counts and destination. Dry-run does not create a download directory and does not require aria2c to be installed.</p>
+<h3 id="manual-input-and-scripts">Manual input and scripts</h3>
+<p>Version0.1.5 supports <code>chathfd download -i</code> in a terminal to enter the repository, type, destination, filters and concurrency. An interactive transfer first prints the selected files and total size, then requires confirmation. Use <code>--dry-run</code> to preview only. If only the repository ID is missing, a TTY can auto-prompt for that ID when <code>CHATARCH_AUTO_PROMPT</code> allows it; other values retain their defaults.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Fill missing values manually (confirmation is still required before transfer)</span>
+chathfd<span class="w"> </span>download<span class="w"> </span>-i
+<span class="c1"># Automation: no prompts; -I alone is not a dry run</span>
+chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flash-Next<span class="w"> </span>--include<span class="w"> </span>config.json<span class="w"> </span>--dry-run<span class="w"> </span>-I
+</code></pre></div>
+<p><code>-I</code> with no repository ID fails immediately, as does <code>-i</code> without a TTY. Set <code>CHATARCH_AUTO_PROMPT=0</code> to suppress automatic prompts. This interaction is provided from0.1.5, with range/choice/path conversion shared through ChatStyle0.2.1.</p>
 <h2 id="model">3. Download a model config</h2>
 <div class="highlight"><pre><span></span><code>chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flash-Next<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--include<span class="w"> </span><span class="s1">'config.json'</span><span class="w"> </span><span class="se">\</span>

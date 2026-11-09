@@ -962,10 +962,11 @@
 <h2 id="_2">从命令到文件</h2>
 <div class="highlight"><pre><span></span><code>chathfd.cli                         # 只负责 CLI 参数和调用
 ├── main                            # --help / --version / --tree / --tree-brief
-├── download REPO_ID
+├── download [REPO_ID] [-i|-I]      # ChatStyle 补参，人工预检后确认
 │   └── chathfd.download.download_repo(...)
 │       ├── fetch_metadata(...)     # Hub 模型/数据集元数据
 │       ├── 文件选择、路径与身份检查
+│       ├── 可选 confirm 回调        # 预检后、任何写入前
 │       ├── .chathfd/selection.json + urls.txt
 │       └── aria2c                  # 并发、分片与续传
 └── setup [--install]
@@ -992,9 +993,9 @@
 </tr>
 <tr>
 <td><code>download_repo</code></td>
-<td>仓库、端点、目录、筛选、并发与开关</td>
+<td>仓库、端点、目录、筛选、并发、开关与可选 <code>confirm</code> 回调</td>
 <td><code>None</code>；状态输出到控制台</td>
-<td>非 dry-run 时写文件并运行 aria2</td>
+<td>仅非 dry-run 时：未设置回调或回调确认后，才写文件并运行 aria2</td>
 </tr>
 <tr>
 <td><code>setup_aria2</code></td>
@@ -1013,7 +1014,7 @@
 <p>这些是当前导入面，不是 HTTP/MCP 服务，也没有独立的持久任务队列。<code>download_repo()</code> 的错误通过 <code>click.ClickException</code> 等异常报告，不返回结构化下载结果对象。</p>
 <h2 id="_4">责任分工</h2>
 <ul>
-<li>ChatStyle：真实 CLI 树、确认交互。</li>
+<li>ChatStyle：真实 CLI 树、可选的输入解析与确认交互。</li>
 <li>ChatEnv：已有 schema/provider 注册；不是当前 Hugging Face 登录实现。</li>
 <li>ChatHFD：解析仓库元数据、选择文件、固定 commit、校验目标、构造 aria2 输入清单。</li>
 <li>aria2：网络传输、分片和续传；不因为它退出成功就省略最终大小检查。</li>

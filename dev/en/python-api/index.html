@@ -1049,9 +1049,13 @@
 <td><code>dry_run</code>, <code>allow_large</code></td>
 <td>Booleans</td>
 </tr>
+<tr>
+<td><code>confirm</code></td>
+<td>Optional keyword-only callback <code>(file_count: int, total_bytes: int) -&gt; bool</code>; <code>None</code> does not prompt, refusal aborts before any file writes</td>
+</tr>
 </tbody>
 </table>
-<p>The function returns <code>None</code> and uses Click output. Metadata/transfer failures raise <code>click.ClickException</code>; filesystem failures can raise <code>OSError</code>. It is not a silent background API or a structured file-result service.</p>
+<p>The function returns <code>None</code> and uses Click output. Metadata/transfer failures raise <code>click.ClickException</code>; a declined callback raises <code>click.Abort</code>. Filesystem failures can raise <code>OSError</code>. <code>confirm</code> lets the caller opt into a decision after preflight; the Python API does not force interaction. It is not a silent background API or a structured file-result service.</p>
 <h2 id="setup">Check the engine</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">chathfd.setup</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_aria2</span>
 

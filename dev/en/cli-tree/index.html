@@ -1025,7 +1025,7 @@
 
 
 <h1 id="cli-tree-and-command-reference">CLI Tree and command reference</h1>
-<p>The complete tree comes from real <code>chathfd --tree</code> output, not a roadmap. Start with the brief view and then inspect each action.</p>
+<p>The complete tree comes from real <code>chathfd --tree</code> output, not a roadmap. Interaction flags are provided from0.1.5. Start with the brief view and then inspect each action.</p>
 <h2 id="brief-command-tree">Brief command tree</h2>
 <div class="highlight"><pre><span></span><code>chathfd
 ├── --help  # Show this message and exit.
@@ -1041,7 +1041,7 @@
 ├── --version  # Show the version and exit.
 ├── --tree  # Print the registered CLI tree and exit.
 ├── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
-├── download &lt;REPO-ID&gt; [--repo-type REPO-TYPE] [--revision REVISION] [--endpoint ENDPOINT] [--local-dir LOCAL-DIR] [--include INCLUDE] [--exclude EXCLUDE] [--connections CONNECTIONS] [--jobs JOBS] [--dry-run] [--allow-large]  # Download a public model or dataset with aria2c.
+├── download [REPO-ID] [--repo-type REPO-TYPE] [--revision REVISION] [--endpoint ENDPOINT] [--local-dir LOCAL-DIR] [--include INCLUDE] [--exclude EXCLUDE] [--connections CONNECTIONS] [--jobs JOBS] [--dry-run] [--allow-large] [--interactive]  # Download a public model or dataset with aria2c.
 └── setup [--install]  # Check the aria2c download engine and offer installation.
 </code></pre></div>
 <h2 id="root-options">Root options</h2>
@@ -1077,9 +1077,9 @@
 </tbody>
 </table>
 <h2 id="download">Download action</h2>
-<div class="highlight"><pre><span></span><code>chathfd download REPO_ID [OPTIONS]
+<div class="highlight"><pre><span></span><code>chathfd download [REPO_ID] [OPTIONS] [-i|-I]
 </code></pre></div>
-<p><code>REPO_ID</code> is <code>organization/repository</code>, or a supported legacy single-name Hub repository. Models and datasets share one action; preview is an option, not a subcommand.</p>
+<p><code>REPO_ID</code> is <code>organization/repository</code>, or a supported legacy single-name Hub repository. Models and datasets share one action; preview is an option, not a subcommand. An omitted ID is prompted only on an interactive terminal; <code>-I</code> fails immediately when it is missing. The detailed tree renders Click's registered <code>[--interactive]</code> name; short <code>-i/-I</code> forms appear in command help.</p>
 <table>
 <thead>
 <tr>
@@ -1140,13 +1140,23 @@
 <td>Permit transfer of a selection over 10 GiB</td>
 </tr>
 <tr>
+<td><code>-i</code> / <code>--interactive</code></td>
+<td>Automatic</td>
+<td>Force prompts for unspecified download options, then preview files and confirm before transfer</td>
+</tr>
+<tr>
+<td><code>-I</code> / <code>--no-interactive</code></td>
+<td>Automatic</td>
+<td>Disable prompts; missing required values fail, complete values still download; not a dry run</td>
+</tr>
+<tr>
 <td><code>--help</code></td>
 <td>—</td>
 <td>Show action help only</td>
 </tr>
 </tbody>
 </table>
-<p>An actual transfer writes files and <code>.chathfd</code> records and invokes aria2. See <a href="../configuration/">Configuration</a> for preflight and completion conditions. Login, token forwarding, wget and native ModelScope are outside the implemented option surface.</p>
+<p>Automatic prompting requires both input and output to be TTYs and <code>CHATARCH_AUTO_PROMPT</code> not set to <code>0/false/no/off</code>; <code>-i</code> fails without a TTY. Auto mode only requests a missing repository ID; <code>-i</code> also requests unspecified type, revision, endpoint, destination, filters, concurrency and preview/large-selection options, preserving explicit values. A declined confirmation creates no destination. An actual transfer writes files and <code>.chathfd</code> records and invokes aria2. See <a href="../configuration/">Configuration</a> for preflight and completion conditions. Login, token forwarding, wget and native ModelScope are outside the implemented option surface.</p>
 <div class="highlight"><pre><span></span><code>chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flash-Next<span class="w"> </span>--include<span class="w"> </span>config.json<span class="w"> </span>--dry-run
 chathfd<span class="w"> </span>download<span class="w"> </span>MathArena/arxivmath-0926<span class="w"> </span>--repo-type<span class="w"> </span>dataset<span class="w"> </span>--dry-run
 </code></pre></div>
