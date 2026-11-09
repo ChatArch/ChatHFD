@@ -1,12 +1,27 @@
 site_name: ChatHFD 文档
+site_description: 公开 Hugging Face 模型与数据集下载：镜像、aria2 并发、预检和续传。
 site_url: https://arch.gh.wzhecnu.cn/ChatHFD/
 repo_url: https://github.com/ChatArch/ChatHFD
+repo_name: ChatArch/ChatHFD
 theme:
   name: material
   language: zh
+  font: false
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - toc.follow
+    - search.suggest
+    - content.code.copy
 markdown_extensions:
   - attr_list
   - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
@@ -28,16 +43,36 @@ plugins:
           build: true
           site_name: ChatHFD Documentation
           nav_translations:
+            开始使用: Getting Started
             首页: Home
+            快速开始: Quickstart
+            命令与接口: Commands and APIs
             CLI 树: CLI Tree
+            Python 接口: Python API
+            接口树: Interface Tree
+            下载指南: Download Guide
+            下载配置: Configuration
+            故障排查: Troubleshooting
+            能力边界: Capabilities
+            能力地图: Capability Map
 extra:
   alternate:
     - name: 中文
-      link: /ChatHFD/
+      link: !ENV [CHATARCH_DOCS_ZH_PREFIX, /ChatHFD/]
       lang: zh
     - name: English
-      link: /ChatHFD/en/
+      link: !ENV [CHATARCH_DOCS_EN_PREFIX, /ChatHFD/en/]
       lang: en
 nav:
-  - 首页: index.md
-  - CLI 树: cli-tree.md
+  - 开始使用:
+      - 首页: index.md
+      - 快速开始: quickstart.md
+  - 命令与接口:
+      - CLI 树: cli-tree.md
+      - Python 接口: python-api.md
+      - 接口树: interface-tree.md
+  - 下载指南:
+      - 下载配置: configuration.md
+      - 故障排查: troubleshooting.md
+  - 能力边界:
+      - 能力地图: capability-map.md

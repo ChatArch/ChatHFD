@@ -10,10 +10,17 @@ permissions:
   contents: write
   pull-requests: write
 
+concurrency:
+  group: docs-pages-${{ github.repository }}
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     if: ${{ !github.event.pull_request.head.repo.fork }}
+    env:
+      CHATARCH_DOCS_ZH_PREFIX: /ChatHFD/dev/
+      CHATARCH_DOCS_EN_PREFIX: /ChatHFD/dev/en/
     steps:
       - uses: actions/checkout@v4
       - name: Configure Git Credentials

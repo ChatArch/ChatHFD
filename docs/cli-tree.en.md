@@ -1,6 +1,20 @@
-# CLI Tree
+# CLI Tree and command reference
 
-This page mirrors the real `chathfd --tree` output. ChatStyle fixes the public root name to `chathfd`; `--tree-brief` only omits command parameter signatures.
+The complete tree comes from real `chathfd --tree` output, not a roadmap. Start with the brief view and then inspect each action.
+
+## Brief command tree
+
+```text
+chathfd
+├── --help  # Show this message and exit.
+├── --version  # Show the version and exit.
+├── --tree  # Print the registered CLI tree and exit.
+├── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
+├── download  # Download a public model or dataset with aria2c.
+└── setup  # Check the aria2c download engine and offer installation.
+```
+
+## Complete command tree
 
 ```text
 chathfd
@@ -12,15 +26,63 @@ chathfd
 └── setup [--install]  # Check the aria2c download engine and offer installation.
 ```
 
-The command line in `chathfd --tree-brief` is:
+## Root options
+
+| Option | Purpose | Effects |
+| --- | --- | --- |
+| `--help` | Help for the current command | No download |
+| `--version` | Installed package version | No download |
+| `--tree` | Registered tree with parameter signatures | No download |
+| `--tree-brief` | Same commands without signatures | No download |
+
+## Download action {#download}
 
 ```text
-├── download  # Download a public model or dataset with aria2c.
-└── setup  # Check the aria2c download engine and offer installation.
+chathfd download REPO_ID [OPTIONS]
 ```
 
-## Download boundary
+`REPO_ID` is `organization/repository`, or a supported legacy single-name Hub repository. Models and datasets share one action; preview is an option, not a subcommand.
 
-`setup` checks for `aria2c` and suggests a package-manager command if missing; `setup --install` requires explicit confirmation before attempting installation. `download` supports public Hugging Face models and datasets (`--repo-type dataset`). The default endpoint is `https://hf-mirror.com`; `HF_ENDPOINT` or `--endpoint` overrides it. Select files with `--include` / `--exclude`, preview with `--dry-run`, and opt in to selections over 10 GiB with `--allow-large`. `--jobs` controls concurrent files and `--connections` connections per file. Verification is by size only; gated/private tokens are not supported. See the [repository README](https://github.com/ChatArch/ChatHFD/blob/main/README.en.md#examples) for examples and the ModelScope distinction.
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--repo-type [model|dataset]` | `model` | Repository type |
+| `--revision TEXT` | `main` | Branch, tag or commit |
+| `--endpoint TEXT` | `HF_ENDPOINT` or HF-Mirror | Compatible HTTPS origin; explicit option wins |
+| `--local-dir DIRECTORY` | Current-directory `models/` or `datasets/` + repo ID | Selected file output root |
+| `--include TEXT` | All files | Repeatable include glob |
+| `--exclude TEXT` | None | Repeatable exclude glob |
+| `--connections INTEGER` | `4`, range 1–10 | Connections/splits per file |
+| `--jobs INTEGER` | `5`, range 1–10 | Concurrent files |
+| `--dry-run` | Off | Query and list files/sizes without creating download files |
+| `--allow-large` | Off | Permit transfer of a selection over 10 GiB |
+| `--help` | — | Show action help only |
 
-When updating the CLI, change Click registration and tests first, then rerun `chathfd --tree` and `chathfd --tree-brief` to refresh this page and the README.
+An actual transfer writes files and `.chathfd` records and invokes aria2. See [Configuration](configuration.md) for preflight and completion conditions. Login, token forwarding, wget and native ModelScope are outside the implemented option surface.
+
+```bash
+chathfd download Qwen/Qwen3.8-Flash-Next --include config.json --dry-run
+chathfd download MathArena/arxivmath-0926 --repo-type dataset --dry-run
+```
+
+## Engine preparation {#setup}
+
+```text
+chathfd setup [--install] [--help]
+```
+
+| Input | Behavior |
+| --- | --- |
+| No options | Check aria2c; print path when present or installation guidance otherwise |
+| `--install` | If missing, show the proposed command and require confirmation before a package-manager call |
+| `--help` | Show help without installation |
+
+An existing aria2c is not reinstalled. This does not install external `hfd.sh`, launch a daemon or persist endpoint/output settings. Installation does not proceed without confirmation; manager errors fail nonzero.
+
+## Output and exit behavior
+
+- Successful preview or verified download exits 0 and prints selection information; completed transfer adds size-verification output.
+- Invalid input, failed network/metadata or incomplete transfer fails nonzero. A start message is not a completion receipt.
+- Setup can exit normally after detecting or suggesting installation. Exit 0 alone does not prove a missing engine was installed; require `aria2c ready` and the executable.
+- No extra `model`, `dataset`, `login` or `mirror` subcommands exist. Legacy `hfd` flags are not current options.
+
+[Quickstart](quickstart.md) · [Python API](python-api.md) · [Legacy comparison](troubleshooting.md)

@@ -9,10 +9,21 @@
 
 ChatHFD is ChatArch's tool for downloading Hugging Face models and datasets. Requires Python 3.10+ and `aria2c`. Public repositories only; no CLI token handling.
 
+## Documentation
+
+| Task | Guide |
+| --- | --- |
+| First installation and download | [Quickstart](https://arch.gh.wzhecnu.cn/ChatHFD/en/quickstart/) |
+| Every command, option and default | [Complete CLI Tree](https://arch.gh.wzhecnu.cn/ChatHFD/en/cli-tree/) |
+| Endpoint, destination and resume | [Configuration](https://arch.gh.wzhecnu.cn/ChatHFD/en/configuration/) |
+| Python integration | [Python API](https://arch.gh.wzhecnu.cn/ChatHFD/en/python-api/) and [Interface Tree](https://arch.gh.wzhecnu.cn/ChatHFD/en/interface-tree/) |
+| Implemented scope | [Capability Map](https://arch.gh.wzhecnu.cn/ChatHFD/en/capability-map/) |
+| Failures and legacy flags | [Troubleshooting](https://arch.gh.wzhecnu.cn/ChatHFD/en/troubleshooting/) |
+
 ## Examples
 
 ```bash
-pip install ChatHFD==0.1.3
+pip install ChatHFD==0.1.4
 chathfd --tree
 chathfd setup  # Check aria2c; if missing, show installation guidance
 # To install explicitly: chathfd setup --install (requires confirmation)
