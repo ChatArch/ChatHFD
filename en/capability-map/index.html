@@ -978,6 +978,11 @@
 <td>HF-Mirror by default; no cross-platform fallback</td>
 </tr>
 <tr>
+<td>Download root</td>
+<td><code>CHATHFD_DOWNLOAD_ROOT</code>, ChatEnv, <code>--local-dir</code></td>
+<td>Cwd default + repo ID; explicit local-dir is final; no automatic shared-path configuration</td>
+</tr>
+<tr>
 <td>Concurrency and resume</td>
 <td><code>--connections</code>, <code>--jobs</code></td>
 <td>Local aria2 and matching destination identity</td>
@@ -1003,7 +1008,7 @@
 <ul>
 <li>Login, token management or forwarding for private/gated Hub repositories.</li>
 <li>Native ModelScope downloads, wget backend or automatic replacement of old <code>hfd</code> aliases.</li>
-<li>Global cache management, remote filesystem mounts, job queues or background daemons.</li>
+<li>Standard Hugging Face cache migration or automatic legacy adoption, remote mounts, job queues or background daemons.</li>
 <li>Upstream cryptographic verification, inference validation or dataset training pipelines.</li>
 </ul>
 <p>A successful config or README download is not a completed weight download. <a href="../quickstart/#model">Quickstart</a> distinguishes small examples from full repositories.</p>

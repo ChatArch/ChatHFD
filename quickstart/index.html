@@ -1090,7 +1090,7 @@
 </div>
 <h2 id="install">1. 安装与检查</h2>
 <p>在自己的 Python 虚拟环境中安装，不需要修改系统 Python：</p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">ChatHFD</span><span class="o">==</span><span class="m">0</span>.1.5
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">ChatHFD</span><span class="o">==</span><span class="m">0</span>.1.6
 chathfd<span class="w"> </span>--version
 chathfd<span class="w"> </span>--tree
 chathfd<span class="w"> </span>setup
@@ -1105,6 +1105,7 @@ chathfd<span class="w"> </span>setup
 <span class="w">  </span>--dry-run
 </code></pre></div>
 <p>输出包含仓库类型、请求版本、固定 commit、选中文件、字节数和目标路径。<code>--dry-run</code> 不创建下载目录，也不要求 aria2c 已安装。</p>
+<p>从0.1.6起，默认根目录是命令执行时的当前目录，仓库放在<code>./&lt;组织&gt;/&lt;仓库&gt;</code>，不再套models/datasets。可选<code>CHATHFD_DOWNLOAD_ROOT</code>支持进程变量及ChatEnv活动profile，<code>--local-dir</code>则是精确最终目录；不会自动写入共享盘配置。手动设置和优先级见<a href="../configuration/#download-root">下载根目录</a>。</p>
 <h3 id="_2">人工输入与脚本</h3>
 <p>从0.1.5起可在终端运行 <code>chathfd download -i</code>，按提示输入仓库、类型、目录、过滤和并发等；交互下载会先列出文件与总量，确认后才传输。只想预检时显式传 <code>--dry-run</code>。缺少仓库 ID 时，若输入/输出都是 TTY 且 <code>CHATARCH_AUTO_PROMPT</code> 未关闭，也只会自动询问仓库 ID，后续沿用默认值。</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># 人工逐项填写（真正传输前还需确认）</span>

@@ -623,6 +623,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory resolution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#setup" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -928,6 +939,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory resolution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#setup" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1035,7 +1057,7 @@
 </tr>
 <tr>
 <td><code>local_dir</code></td>
-<td><code>Path</code> or <code>None</code>; <code>None</code> uses the current-directory layout</td>
+<td><code>Path</code> or <code>None</code>; explicit value is the final directory, <code>None</code> uses process/ChatEnv/cwd root + repo ID</td>
 </tr>
 <tr>
 <td><code>includes</code>, <code>excludes</code></td>
@@ -1056,6 +1078,15 @@
 </tbody>
 </table>
 <p>The function returns <code>None</code> and uses Click output. Metadata/transfer failures raise <code>click.ClickException</code>; a declined callback raises <code>click.Abort</code>. Filesystem failures can raise <code>OSError</code>. <code>confirm</code> lets the caller opt into a decision after preflight; the Python API does not force interaction. It is not a silent background API or a structured file-result service.</p>
+<h2 id="directory">Directory resolution</h2>
+<p>Directory resolution is reusable without creating directories or network calls:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">chathfd.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_download_root</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">chathfd.download</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_download_directory</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">resolve_download_root</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">resolve_download_directory</span><span class="p">(</span><span class="s2">"Example/repository"</span><span class="p">))</span>
+</code></pre></div>
+<p><code>resolve_download_directory(repo_id, local_dir=None)</code> appends the repo ID by default; an explicit <code>local_dir</code> overrides the exact final destination. The CLI and <code>download_repo()</code> share this logic and use the same provider namespace.</p>
 <h2 id="setup">Check the engine</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">chathfd.setup</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_aria2</span>
 

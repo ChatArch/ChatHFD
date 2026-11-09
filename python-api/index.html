@@ -623,6 +623,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        目录解析
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#setup" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -928,6 +939,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        目录解析
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#setup" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1035,7 +1057,7 @@
 </tr>
 <tr>
 <td><code>local_dir</code></td>
-<td><code>Path</code> 或 <code>None</code>；<code>None</code> 使用当前目录下的默认布局</td>
+<td><code>Path</code> 或 <code>None</code>；显式值是最终目录，<code>None</code>使用进程变量/ChatEnv/当前目录根 + repo ID</td>
 </tr>
 <tr>
 <td><code>includes</code>、<code>excludes</code></td>
@@ -1056,6 +1078,15 @@
 </tbody>
 </table>
 <p>函数返回 <code>None</code>，状态通过 Click 输出。元数据/下载失败会抛出 <code>click.ClickException</code>，回调拒绝则抛出 <code>click.Abort</code>；本地文件系统失败还可能抛出 <code>OSError</code>。<code>confirm</code> 用于调用端选择是否在预检后确认，不会因为 Python API 被调用就强制交互。它不是静默后台下载 API，暂不返回文件清单结果对象。</p>
+<h2 id="directory">目录解析</h2>
+<p>目录解析可直接复用，不创建目录或请求网络：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">chathfd.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_download_root</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">chathfd.download</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_download_directory</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">resolve_download_root</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">resolve_download_directory</span><span class="p">(</span><span class="s2">"Example/repository"</span><span class="p">))</span>
+</code></pre></div>
+<p><code>resolve_download_directory(repo_id, local_dir=None)</code>默认追加repo ID；显式<code>local_dir</code>优先并作为最终目录。CLI和<code>download_repo()</code>共享此逻辑，不读取其他命名空间的配置。</p>
 <h2 id="setup">检查下载器</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">chathfd.setup</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_aria2</span>
 
