@@ -68,7 +68,7 @@
 ## 最小可运行流程
 
 ```bash
-pip install ChatHFD==0.1.4
+pip install ChatHFD==0.1.5
 chathfd setup
 chathfd download Qwen/Qwen3.8-Flash-Next --include config.json --dry-run
 ```

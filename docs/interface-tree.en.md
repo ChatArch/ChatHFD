@@ -5,10 +5,11 @@
 ```text
 chathfd.cli                         # CLI inputs and dispatch
 ├── main                            # --help / --version / --tree / --tree-brief
-├── download REPO_ID
+├── download [REPO_ID] [-i|-I]      # ChatStyle input resolution; manual confirmation
 │   └── chathfd.download.download_repo(...)
 │       ├── fetch_metadata(...)     # Hub model/dataset metadata
 │       ├── selection, path and identity checks
+│       ├── optional confirm callback  # after preflight, before writes
 │       ├── .chathfd/selection.json + urls.txt
 │       └── aria2c                  # concurrency, splits and resume
 └── setup [--install]
@@ -22,7 +23,7 @@ chathfd.cli                         # CLI inputs and dispatch
 | API | Input | Output | Effects |
 | --- | --- | --- | --- |
 | `fetch_metadata` | endpoint, repo_id, repo_type, revision | Metadata `dict` | HTTP GET; no download files |
-| `download_repo` | repository, endpoint, directory, filters, concurrency and switches | `None`; console output | Writes files and runs aria2 unless dry-run |
+| `download_repo` | repository, endpoint, directory, filters, concurrency, switches and optional `confirm` callback | `None`; console output | Writes files and runs aria2 unless dry-run or confirmation declined |
 | `setup_aria2` | `install: bool` | `None`; check/install messages | No installation by default; explicit mode still confirms |
 | `ChathfdConfig` | ChatEnv provider registration | Schema | Its API key is not downloader authentication |
 
@@ -30,7 +31,7 @@ These are importable functions, not HTTP/MCP services or a persistent task queue
 
 ## Ownership
 
-- ChatStyle owns real CLI trees and confirmation interaction.
+- ChatStyle owns real CLI trees and reusable opt-in input/confirmation behavior.
 - ChatEnv provides the existing schema registration, not Hugging Face login here.
 - ChatHFD selects files, pins commits, validates destinations and builds aria2 input.
 - aria2 transfers bytes with splits and resume; successful process exit does not replace final size checks.

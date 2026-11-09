@@ -43,7 +43,7 @@ Start with a small selection to check the engine, endpoint and destination befor
 Use your own Python virtual environment instead of modifying system Python:
 
 ```bash
-python -m pip install ChatHFD==0.1.4
+python -m pip install ChatHFD==0.1.5
 chathfd --version
 chathfd --tree
 chathfd setup
@@ -66,6 +66,19 @@ chathfd download Qwen/Qwen3.8-Flash-Next \
 ```
 
 Output includes the repository type, requested revision, pinned commit, selected files, byte counts and destination. Dry-run does not create a download directory and does not require aria2c to be installed.
+
+### Manual input and scripts
+
+Version0.1.5 supports `chathfd download -i` in a terminal to enter the repository, type, destination, filters and concurrency. An interactive transfer first prints the selected files and total size, then requires confirmation. Use `--dry-run` to preview only. If only the repository ID is missing, a TTY can auto-prompt for that ID when `CHATARCH_AUTO_PROMPT` allows it; other values retain their defaults.
+
+```bash
+# Fill missing values manually (confirmation is still required before transfer)
+chathfd download -i
+# Automation: no prompts; -I alone is not a dry run
+chathfd download Qwen/Qwen3.8-Flash-Next --include config.json --dry-run -I
+```
+
+`-I` with no repository ID fails immediately, as does `-i` without a TTY. Set `CHATARCH_AUTO_PROMPT=0` to suppress automatic prompts. This interaction is provided from0.1.5, with range/choice/path conversion shared through ChatStyle0.2.1.
 
 ## 3. Download a model config {#model}
 

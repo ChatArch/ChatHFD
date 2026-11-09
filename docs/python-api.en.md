@@ -80,8 +80,9 @@ The example is a metadata-only preview. Set `dry_run=False` to write files. For 
 | `includes`, `excludes` | `tuple[str, ...]` |
 | `connections`, `jobs` | Integers; Python callers should retain the CLI's 1–10 range |
 | `dry_run`, `allow_large` | Booleans |
+| `confirm` | Optional keyword-only callback `(file_count: int, total_bytes: int) -> bool`; `None` does not prompt, refusal aborts before any file writes |
 
-The function returns `None` and uses Click output. Metadata/transfer failures raise `click.ClickException`; filesystem failures can raise `OSError`. It is not a silent background API or a structured file-result service.
+The function returns `None` and uses Click output. Metadata/transfer failures raise `click.ClickException`; a declined callback raises `click.Abort`. Filesystem failures can raise `OSError`. `confirm` lets the caller opt into a decision after preflight; the Python API does not force interaction. It is not a silent background API or a structured file-result service.
 
 ## Check the engine {#setup}
 

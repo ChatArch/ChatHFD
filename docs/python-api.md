@@ -80,8 +80,9 @@ except click.ClickException as exc:
 | `includes`、`excludes` | `tuple[str, ...]` |
 | `connections`、`jobs` | 整数；Python 调用方应使用与 CLI 相同的 1–10 范围 |
 | `dry_run`、`allow_large` | 布尔值 |
+| `confirm` | 可选仅关键字回调 `(文件数: int, 总字节数: int) -> bool`；默认 `None` 不提问，拒绝时在任何文件写入前中止 |
 
-函数返回 `None`，状态通过 Click 输出。元数据/下载失败会抛出 `click.ClickException`；本地文件系统失败还可能抛出 `OSError`。它不是静默后台下载 API，暂不返回文件清单结果对象。
+函数返回 `None`，状态通过 Click 输出。元数据/下载失败会抛出 `click.ClickException`，回调拒绝则抛出 `click.Abort`；本地文件系统失败还可能抛出 `OSError`。`confirm` 用于调用端选择是否在预检后确认，不会因为 Python API 被调用就强制交互。它不是静默后台下载 API，暂不返回文件清单结果对象。
 
 ## 检查下载器 {#setup}
 

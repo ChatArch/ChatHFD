@@ -9,6 +9,8 @@
 
 ChatHFD is ChatArch's tool for downloading Hugging Face models and datasets. Requires Python 3.10+ and `aria2c`. Public repositories only; no CLI token handling.
 
+Version0.1.5 opts `download` into ChatStyle shared input resolution and type validation with `-i/-I`. `-I` disables prompts but is not a dry run.
+
 ## Documentation
 
 | Task | Guide |
@@ -23,7 +25,7 @@ ChatHFD is ChatArch's tool for downloading Hugging Face models and datasets. Req
 ## Examples
 
 ```bash
-pip install ChatHFD==0.1.4
+pip install ChatHFD==0.1.5
 chathfd --tree
 chathfd setup  # Check aria2c; if missing, show installation guidance
 # To install explicitly: chathfd setup --install (requires confirmation)
@@ -51,7 +53,7 @@ chathfd
 ├── --version  # Show the version and exit.
 ├── --tree  # Print the registered CLI tree and exit.
 ├── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
-├── download <REPO-ID> [--repo-type REPO-TYPE] [--revision REVISION] [--endpoint ENDPOINT] [--local-dir LOCAL-DIR] [--include INCLUDE] [--exclude EXCLUDE] [--connections CONNECTIONS] [--jobs JOBS] [--dry-run] [--allow-large]  # Download a public model or dataset with aria2c.
+├── download [REPO-ID] [--repo-type REPO-TYPE] [--revision REVISION] [--endpoint ENDPOINT] [--local-dir LOCAL-DIR] [--include INCLUDE] [--exclude EXCLUDE] [--connections CONNECTIONS] [--jobs JOBS] [--dry-run] [--allow-large] [--interactive]  # Download a public model or dataset with aria2c.
 └── setup [--install]  # Check the aria2c download engine and offer installation.
 ```
 

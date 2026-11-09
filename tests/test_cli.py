@@ -12,7 +12,7 @@ TREE_ROOT = (
     "├── --tree  # Print the registered CLI tree and exit.\n"
     "├── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.\n"
 )
-DETAILED_TREE = TREE_ROOT + "├── download <REPO-ID> [--repo-type REPO-TYPE] [--revision REVISION] [--endpoint ENDPOINT] [--local-dir LOCAL-DIR] [--include INCLUDE] [--exclude EXCLUDE] [--connections CONNECTIONS] [--jobs JOBS] [--dry-run] [--allow-large]  # Download a public model or dataset with aria2c.\n└── setup [--install]  # Check the aria2c download engine and offer installation.\n"
+DETAILED_TREE = TREE_ROOT + "├── download [REPO-ID] [--repo-type REPO-TYPE] [--revision REVISION] [--endpoint ENDPOINT] [--local-dir LOCAL-DIR] [--include INCLUDE] [--exclude EXCLUDE] [--connections CONNECTIONS] [--jobs JOBS] [--dry-run] [--allow-large] [--interactive]  # Download a public model or dataset with aria2c.\n└── setup [--install]  # Check the aria2c download engine and offer installation.\n"
 BRIEF_TREE = TREE_ROOT + "├── download  # Download a public model or dataset with aria2c.\n└── setup  # Check the aria2c download engine and offer installation.\n"
 
 
