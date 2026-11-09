@@ -1106,8 +1106,8 @@
 </tr>
 <tr>
 <td><code>--local-dir DIRECTORY</code></td>
-<td>当前目录下 <code>models/</code> 或 <code>datasets/</code> + repo ID</td>
-<td>所选文件的输出根</td>
+<td>配置根目录 + repo ID，根默认当前目录</td>
+<td>显式值是精确最终目录，不追加repo ID；见ChatEnv配置</td>
 </tr>
 <tr>
 <td><code>--include TEXT</code></td>
@@ -1160,6 +1160,7 @@
 <div class="highlight"><pre><span></span><code>chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flash-Next<span class="w"> </span>--include<span class="w"> </span>config.json<span class="w"> </span>--dry-run
 chathfd<span class="w"> </span>download<span class="w"> </span>MathArena/arxivmath-0926<span class="w"> </span>--repo-type<span class="w"> </span>dataset<span class="w"> </span>--dry-run
 </code></pre></div>
+<p>目录优先级为<code>--local-dir</code> &gt; 进程<code>CHATHFD_DOWNLOAD_ROOT</code> &gt; ChatEnv活动profile &gt; 当前目录。根目录与最终目录含义不同；根目录配置及手动命令见<a href="../configuration/#download-root">下载配置</a>。</p>
 <h2 id="setup">下载器准备</h2>
 <div class="highlight"><pre><span></span><code>chathfd setup [--install] [--help]
 </code></pre></div>

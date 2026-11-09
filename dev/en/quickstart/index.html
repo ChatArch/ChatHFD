@@ -1090,7 +1090,7 @@
 </div>
 <h2 id="install">1. Install and check</h2>
 <p>Use your own Python virtual environment instead of modifying system Python:</p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">ChatHFD</span><span class="o">==</span><span class="m">0</span>.1.5
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">ChatHFD</span><span class="o">==</span><span class="m">0</span>.1.6
 chathfd<span class="w"> </span>--version
 chathfd<span class="w"> </span>--tree
 chathfd<span class="w"> </span>setup
@@ -1105,6 +1105,7 @@ chathfd<span class="w"> </span>setup
 <span class="w">  </span>--dry-run
 </code></pre></div>
 <p>Output includes the repository type, requested revision, pinned commit, selected files, byte counts and destination. Dry-run does not create a download directory and does not require aria2c to be installed.</p>
+<p>From0.1.6 the root defaults to the invocation cwd, with output in <code>./&lt;organization&gt;/&lt;repository&gt;</code> and no models/datasets layer. Optional <code>CHATHFD_DOWNLOAD_ROOT</code> supports process env and the active ChatEnv profile; <code>--local-dir</code> is an exact final directory. Shared-storage settings are never written automatically. See <a href="../configuration/#download-root">download-root settings</a> for manual setup and precedence.</p>
 <h3 id="manual-input-and-scripts">Manual input and scripts</h3>
 <p>Version0.1.5 supports <code>chathfd download -i</code> in a terminal to enter the repository, type, destination, filters and concurrency. An interactive transfer first prints the selected files and total size, then requires confirmation. Use <code>--dry-run</code> to preview only. If only the repository ID is missing, a TTY can auto-prompt for that ID when <code>CHATARCH_AUTO_PROMPT</code> allows it; other values retain their defaults.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Fill missing values manually (confirmation is still required before transfer)</span>

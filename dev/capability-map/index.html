@@ -978,6 +978,11 @@
 <td>默认 HF-Mirror，无自动跨平台回退</td>
 </tr>
 <tr>
+<td>下载根目录</td>
+<td><code>CHATHFD_DOWNLOAD_ROOT</code>、ChatEnv、<code>--local-dir</code></td>
+<td>根默认当前目录，追加repo ID；显式local-dir是最终目录；不自动配置共享盘</td>
+</tr>
+<tr>
 <td>并发与续传</td>
 <td><code>--connections</code>、<code>--jobs</code></td>
 <td>需本机 aria2，目录身份须匹配</td>
@@ -1003,7 +1008,7 @@
 <ul>
 <li>Hugging Face 私有或 gated 仓库登录、Token 管理及转发。</li>
 <li>ModelScope 原生下载、wget 后端、旧 <code>hfd</code> 别名自动替换。</li>
-<li>全局缓存目录管理、跨机器挂载、下载任务队列、后台守护进程。</li>
+<li>Hugging Face标准缓存迁移或旧目录自动接管、跨机器挂载、下载任务队列、后台守护进程。</li>
 <li>上游加密哈希验收、模型推理验证或数据集训练流水线。</li>
 </ul>
 <p>不要把单个配置文件或 README 的成功下载称为“模型权重已经下载完成”。查看<a href="../quickstart/#model">快速开始</a>区分小样例和完整仓库。</p>

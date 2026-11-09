@@ -727,6 +727,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#download-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChatEnv download root
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#selection" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -928,6 +939,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#download-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChatEnv download root
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#selection" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1035,6 +1057,47 @@ chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flas
 </code></pre></div>
 <p>The endpoint must be an HTTPS origin without userinfo, path, query or fragment. The CLI does not persist settings, automatically retry another mirror or silently fall back. Python <code>download_repo()</code> takes an explicit <code>endpoint</code>; it does not load <code>HF_ENDPOINT</code> for you.</p>
 <p>ModelScope is not an interchangeable <code>HF_ENDPOINT</code>. It has separate repository IDs, availability and an SDK; ChatHFD has no ModelScope backend. Legacy token flags do not add authentication to the current downloader.</p>
+<h2 id="download-root">ChatEnv download root</h2>
+<p>From0.1.6, non-sensitive <code>CHATHFD_DOWNLOAD_ROOT</code> defaults to <code>.</code> and is resolved against the invocation directory on every call. Models and datasets use <code>&lt;root&gt;/&lt;organization&gt;/&lt;repository&gt;</code>, without an extra models/datasets layer. Relative paths and <code>~</code> work; another machine's mount layout is never inferred.</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Priority</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--local-dir</code> / Python <code>local_dir</code></td>
+<td>Highest</td>
+<td>Exact final directory, no repo suffix; bypasses invalid lower-priority configuration</td>
+</tr>
+<tr>
+<td>Process <code>CHATHFD_DOWNLOAD_ROOT</code></td>
+<td>Next</td>
+<td>Root plus repo ID; an empty string explicitly selects cwd</td>
+</tr>
+<tr>
+<td>Same key in active ChatEnv profile</td>
+<td>Next</td>
+<td>Same root rule</td>
+</tr>
+<tr>
+<td>Default <code>.</code></td>
+<td>Last</td>
+<td><code>&lt;cwd&gt;/&lt;organization&gt;/&lt;repository&gt;</code>, not the install location</td>
+</tr>
+</tbody>
+</table>
+<p>Use ChatEnv in the same Python environment as ChatHFD so its provider is discoverable:</p>
+<div class="highlight"><pre><span></span><code>chatenv<span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="nv">CHATHFD_DOWNLOAD_ROOT</span><span class="o">=</span>/data/hub<span class="w"> </span>-I
+chatenv<span class="w"> </span>list<span class="w"> </span>-t<span class="w"> </span>chathfd
+chatenv<span class="w"> </span><span class="nb">test</span><span class="w"> </span>-t<span class="w"> </span>chathfd<span class="w"> </span>-I
+<span class="nv">CHATHFD_DOWNLOAD_ROOT</span><span class="o">=</span>./cache<span class="w"> </span>chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flash-Next<span class="w"> </span>--include<span class="w"> </span>config.json<span class="w"> </span>--dry-run<span class="w"> </span>-I
+</code></pre></div>
+<p>This reuses the <code>chathfd</code> provider and <code>Chathfd</code> storage namespace. Downloads only read configuration; they never save a variable automatically. The provider test validates the effective root without network calls or creating directories. <code>-i</code> displays the effective final destination as the path default. For shared storage, use a directory accessible on the current host, not an NFS <code>server:/export</code> specification; the tool never remounts or guesses. Use the appropriate active profile, process root or exact directory when models/datasets need separate roots.</p>
+<p>Version0.1.5 and earlier used <code>./models/&lt;repo_id&gt;</code> and <code>./datasets/&lt;repo_id&gt;</code>. Existing files are not migrated; explicit <code>--local-dir</code> semantics stay unchanged. Legacy scaffold <code>CHATHFD_API_KEY</code> is not downloader authentication and need not be filled.</p>
 <h2 id="selection">File selection and concurrency</h2>
 <div class="highlight"><pre><span></span><code>chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flash-Next<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--include<span class="w"> </span><span class="s1">'config.json'</span><span class="w"> </span>--include<span class="w"> </span><span class="s1">'generation_config.json'</span><span class="w"> </span><span class="se">\</span>
@@ -1048,7 +1111,7 @@ chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flas
 <li><code>--revision</code> accepts a branch, tag or commit. Resolve URLs use the commit returned by metadata, even when the request names <code>main</code>.</li>
 </ul>
 <h2 id="resume">Output and resume identity</h2>
-<p>Without <code>--local-dir</code>, models use <code>./models/&lt;org&gt;/&lt;repo&gt;</code> and datasets <code>./datasets/&lt;org&gt;/&lt;repo&gt;</code>, relative to the invocation directory. This is not the standard Hugging Face cache layout and does not infer another machine's shared-storage paths.</p>
+<p>Without <code>--local-dir</code>, the precedence above produces <code>&lt;download-root&gt;/&lt;repo_id&gt;</code>. The selected root itself may be a directory alias, but repository components cannot resolve outside it; an explicit final directory remains an intentional override. This is not the standard Hugging Face cache layout and does not infer another machine's shared paths.</p>
 <div class="highlight"><pre><span></span><code>&lt;destination&gt;/
 ├── &lt;selected repository files&gt;
 └── .chathfd/

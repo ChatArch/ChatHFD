@@ -964,6 +964,7 @@
 ├── main                            # --help / --version / --tree / --tree-brief
 ├── download [REPO_ID] [-i|-I]      # ChatStyle 补参，人工预检后确认
 │   └── chathfd.download.download_repo(...)
+│       ├── resolve_download_directory(...) # 最终目录；复用ChatEnv下载根目录
 │       ├── fetch_metadata(...)     # Hub 模型/数据集元数据
 │       ├── 文件选择、路径与身份检查
 │       ├── 可选 confirm 回调        # 预检后、任何写入前
@@ -992,6 +993,18 @@
 <td>HTTP GET；不写下载文件</td>
 </tr>
 <tr>
+<td><code>resolve_download_root</code></td>
+<td>进程变量、活动ChatEnv profile或<code>.</code></td>
+<td>有效根目录<code>Path</code></td>
+<td>只读；不创建目录或请求网络</td>
+</tr>
+<tr>
+<td><code>resolve_download_directory</code></td>
+<td>repo_id、可选最终local_dir</td>
+<td>最终目录<code>Path</code></td>
+<td>只读验证；CLI/Python共用</td>
+</tr>
+<tr>
 <td><code>download_repo</code></td>
 <td>仓库、端点、目录、筛选、并发、开关与可选 <code>confirm</code> 回调</td>
 <td><code>None</code>；状态输出到控制台</td>
@@ -1005,9 +1018,9 @@
 </tr>
 <tr>
 <td><code>ChathfdConfig</code></td>
-<td>ChatEnv provider 注册</td>
-<td>schema</td>
-<td>当前下载流程不使用其 API Key 认证</td>
+<td>ChatEnv下载根目录字段</td>
+<td>schema及只读路径验证hook</td>
+<td>不创建下载目录、不使用遗留API Key认证</td>
 </tr>
 </tbody>
 </table>
@@ -1015,7 +1028,7 @@
 <h2 id="_4">责任分工</h2>
 <ul>
 <li>ChatStyle：真实 CLI 树、可选的输入解析与确认交互。</li>
-<li>ChatEnv：已有 schema/provider 注册；不是当前 Hugging Face 登录实现。</li>
+<li>ChatEnv：保存活动profile中的下载根目录，下载读取但不自动保存；不是Hugging Face登录实现。</li>
 <li>ChatHFD：解析仓库元数据、选择文件、固定 commit、校验目标、构造 aria2 输入清单。</li>
 <li>aria2：网络传输、分片和续传；不因为它退出成功就省略最终大小检查。</li>
 </ul>

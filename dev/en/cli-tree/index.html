@@ -1106,8 +1106,8 @@
 </tr>
 <tr>
 <td><code>--local-dir DIRECTORY</code></td>
-<td>Current-directory <code>models/</code> or <code>datasets/</code> + repo ID</td>
-<td>Selected file output root</td>
+<td>Configured root + repo ID; root defaults to cwd</td>
+<td>Explicit value is the exact final directory, no repo suffix; see ChatEnv settings</td>
 </tr>
 <tr>
 <td><code>--include TEXT</code></td>
@@ -1160,6 +1160,7 @@
 <div class="highlight"><pre><span></span><code>chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flash-Next<span class="w"> </span>--include<span class="w"> </span>config.json<span class="w"> </span>--dry-run
 chathfd<span class="w"> </span>download<span class="w"> </span>MathArena/arxivmath-0926<span class="w"> </span>--repo-type<span class="w"> </span>dataset<span class="w"> </span>--dry-run
 </code></pre></div>
+<p>Directory precedence is <code>--local-dir</code> &gt; process <code>CHATHFD_DOWNLOAD_ROOT</code> &gt; active ChatEnv profile &gt; cwd. A root and a final directory are different: see <a href="../configuration/#download-root">root configuration</a> for manual commands.</p>
 <h2 id="setup">Engine preparation</h2>
 <div class="highlight"><pre><span></span><code>chathfd setup [--install] [--help]
 </code></pre></div>

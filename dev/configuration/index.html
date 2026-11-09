@@ -727,6 +727,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#download-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChatEnv下载根目录
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#selection" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -928,6 +939,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#download-root" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChatEnv下载根目录
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#selection" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1035,6 +1057,47 @@ chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flas
 </code></pre></div>
 <p>端点必须是 HTTPS origin，不能带用户名、密码、路径、查询参数或片段。当前 CLI 不持久化这些设置，也不会自动在镜像之间重试或回退。Python <code>download_repo()</code> 的 <code>endpoint</code> 是显式参数，不会代为读取 <code>HF_ENDPOINT</code>。</p>
 <p>ModelScope 不是兼容的 <code>HF_ENDPOINT</code> 替换地址。它有独立的仓库 ID、发布状态与 SDK；当前 ChatHFD 没有 ModelScope 后端。也不要用旧的 Token 参数为当前下载器添加认证。</p>
+<h2 id="download-root">ChatEnv下载根目录</h2>
+<p>从0.1.6起，<code>CHATHFD_DOWNLOAD_ROOT</code>是非敏感的下载根目录，默认<code>.</code>，在每次调用时按当前目录解析。模型和数据集统一放在<code>&lt;根目录&gt;/&lt;组织&gt;/&lt;仓库&gt;</code>，不再额外创建models/datasets层；支持相对路径和<code>~</code>。根目录不自动推断另一台机器的挂载路径。</p>
+<table>
+<thead>
+<tr>
+<th>来源</th>
+<th>优先级</th>
+<th>路径含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--local-dir</code> / Python <code>local_dir</code></td>
+<td>最高</td>
+<td>精确最终目录，不追加repo ID；覆盖无效的低优先级配置</td>
+</tr>
+<tr>
+<td>进程 <code>CHATHFD_DOWNLOAD_ROOT</code></td>
+<td>其次</td>
+<td>根目录，追加repo ID；空字符串显式回退当前目录</td>
+</tr>
+<tr>
+<td>ChatEnv活动profile同名字段</td>
+<td>其次</td>
+<td>同一根目录规则</td>
+</tr>
+<tr>
+<td>默认<code>.</code></td>
+<td>最后</td>
+<td>当前目录下<code>&lt;组织&gt;/&lt;仓库&gt;</code>，不是安装目录</td>
+</tr>
+</tbody>
+</table>
+<p>在安装ChatHFD的同一个Python环境运行ChatEnv（其他环境可能发现不了此provider）：</p>
+<div class="highlight"><pre><span></span><code>chatenv<span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="nv">CHATHFD_DOWNLOAD_ROOT</span><span class="o">=</span>/data/hub<span class="w"> </span>-I
+chatenv<span class="w"> </span>list<span class="w"> </span>-t<span class="w"> </span>chathfd
+chatenv<span class="w"> </span><span class="nb">test</span><span class="w"> </span>-t<span class="w"> </span>chathfd<span class="w"> </span>-I
+<span class="nv">CHATHFD_DOWNLOAD_ROOT</span><span class="o">=</span>./cache<span class="w"> </span>chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flash-Next<span class="w"> </span>--include<span class="w"> </span>config.json<span class="w"> </span>--dry-run<span class="w"> </span>-I
+</code></pre></div>
+<p>配置使用原<code>chathfd</code> provider和<code>Chathfd</code>存储命名空间，不另建目录/解析器。普通下载只读配置，不自动保存变量；<code>chatenv test</code>只验证有效根目录，不创建目录、不请求网络。<code>-i</code>会在目标目录提示中显示本次有效的最终默认路径。共享存储要填本机已可访问的目录，而不是NFS的<code>server:/export</code>字符串；先确认服务端与客户端路径视角，不由工具重挂载或猜测。模型/数据集需分开放置时，按用途选活动profile、单次进程变量或<code>--local-dir</code>。</p>
+<p>0.1.5及更早版本曾使用<code>./models/&lt;repo_id&gt;</code>与<code>./datasets/&lt;repo_id&gt;</code>；新布局不会迁移旧数据，显式<code>--local-dir</code>语义不变。模板遗留的<code>CHATHFD_API_KEY</code>仍不用于公开下载，无需填写。</p>
 <h2 id="selection">文件筛选与并发</h2>
 <div class="highlight"><pre><span></span><code>chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flash-Next<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--include<span class="w"> </span><span class="s1">'config.json'</span><span class="w"> </span>--include<span class="w"> </span><span class="s1">'generation_config.json'</span><span class="w"> </span><span class="se">\</span>
@@ -1048,7 +1111,7 @@ chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flas
 <li><code>--revision</code> 接受分支、标签或 commit。下载 URL 固定为元数据返回的 commit，即使请求的是 <code>main</code>。</li>
 </ul>
 <h2 id="resume">目录与续传身份</h2>
-<p>不传 <code>--local-dir</code> 时，模型写到 <code>./models/&lt;org&gt;/&lt;repo&gt;</code>，数据集写到 <code>./datasets/&lt;org&gt;/&lt;repo&gt;</code>；相对目录以命令启动位置为准。它不是 Hugging Face 标准缓存布局，也不会自动采用另一台机器的共享盘路径。</p>
+<p>不传<code>--local-dir</code>时使用上面的根目录优先级，最终为<code>&lt;download-root&gt;/&lt;repo_id&gt;</code>。根目录本身可为用户选择的目录别名，但仓库层级的符号链接不能逃逸配置根；显式最终目录保留用户覆盖语义。这不是Hugging Face标准缓存布局，也不会自动采用另一台机器的共享盘路径。</p>
 <p>下载目录中生成：</p>
 <div class="highlight"><pre><span></span><code>&lt;destination&gt;/
 ├── &lt;selected repository files&gt;
