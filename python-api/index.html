@@ -1049,9 +1049,13 @@
 <td><code>dry_run</code>、<code>allow_large</code></td>
 <td>布尔值</td>
 </tr>
+<tr>
+<td><code>confirm</code></td>
+<td>可选仅关键字回调 <code>(文件数: int, 总字节数: int) -&gt; bool</code>；默认 <code>None</code> 不提问，拒绝时在任何文件写入前中止</td>
+</tr>
 </tbody>
 </table>
-<p>函数返回 <code>None</code>，状态通过 Click 输出。元数据/下载失败会抛出 <code>click.ClickException</code>；本地文件系统失败还可能抛出 <code>OSError</code>。它不是静默后台下载 API，暂不返回文件清单结果对象。</p>
+<p>函数返回 <code>None</code>，状态通过 Click 输出。元数据/下载失败会抛出 <code>click.ClickException</code>，回调拒绝则抛出 <code>click.Abort</code>；本地文件系统失败还可能抛出 <code>OSError</code>。<code>confirm</code> 用于调用端选择是否在预检后确认，不会因为 Python API 被调用就强制交互。它不是静默后台下载 API，暂不返回文件清单结果对象。</p>
 <h2 id="setup">检查下载器</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">chathfd.setup</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_aria2</span>
 

@@ -1025,7 +1025,7 @@
 
 
 <h1 id="cli">CLI 树与命令参考</h1>
-<p>完整树来自真实 <code>chathfd --tree</code>，不是规划中的命令。参数很多时，先看简明树，再进入对应动作。</p>
+<p>完整树来自真实 <code>chathfd --tree</code>，不是规划中的命令；交互选项从0.1.5起提供。参数很多时，先看简明树，再进入对应动作。</p>
 <h2 id="_1">简明命令树</h2>
 <div class="highlight"><pre><span></span><code>chathfd
 ├── --help  # Show this message and exit.
@@ -1041,7 +1041,7 @@
 ├── --version  # Show the version and exit.
 ├── --tree  # Print the registered CLI tree and exit.
 ├── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
-├── download &lt;REPO-ID&gt; [--repo-type REPO-TYPE] [--revision REVISION] [--endpoint ENDPOINT] [--local-dir LOCAL-DIR] [--include INCLUDE] [--exclude EXCLUDE] [--connections CONNECTIONS] [--jobs JOBS] [--dry-run] [--allow-large]  # Download a public model or dataset with aria2c.
+├── download [REPO-ID] [--repo-type REPO-TYPE] [--revision REVISION] [--endpoint ENDPOINT] [--local-dir LOCAL-DIR] [--include INCLUDE] [--exclude EXCLUDE] [--connections CONNECTIONS] [--jobs JOBS] [--dry-run] [--allow-large] [--interactive]  # Download a public model or dataset with aria2c.
 └── setup [--install]  # Check the aria2c download engine and offer installation.
 </code></pre></div>
 <h2 id="_3">根选项</h2>
@@ -1077,9 +1077,9 @@
 </tbody>
 </table>
 <h2 id="download">下载动作</h2>
-<div class="highlight"><pre><span></span><code>chathfd download REPO_ID [OPTIONS]
+<div class="highlight"><pre><span></span><code>chathfd download [REPO_ID] [OPTIONS] [-i|-I]
 </code></pre></div>
-<p><code>REPO_ID</code> 为 <code>组织/仓库</code>，也接受 Hub 支持的单段旧仓库名。模型和数据集共用同一个动作；预览是选项，不是另一个子命令。</p>
+<p><code>REPO_ID</code> 为 <code>组织/仓库</code>，也接受 Hub 支持的单段旧仓库名。模型和数据集共用同一个动作；预览是选项，不是另一个子命令。<code>REPO_ID</code> 仅在可交互终端缺参时才提问；<code>-I</code> 缺参立即报错。完整树显示的是 Click 注册名 <code>[--interactive]</code>，命令帮助中另有短选项 <code>-i/-I</code>。</p>
 <table>
 <thead>
 <tr>
@@ -1140,13 +1140,23 @@
 <td>允许所选文件超过 10 GiB 后实际传输</td>
 </tr>
 <tr>
+<td><code>-i</code> / <code>--interactive</code></td>
+<td>自动</td>
+<td>强制进入交互，逐项询问尚未提供的下载参数；实际传输前展示文件清单并二次确认</td>
+</tr>
+<tr>
+<td><code>-I</code> / <code>--no-interactive</code></td>
+<td>自动</td>
+<td>禁止提问；必需参数不足时失败，参数完整时照常下载，不等于 <code>--dry-run</code></td>
+</tr>
+<tr>
 <td><code>--help</code></td>
 <td>—</td>
 <td>仅显示本动作帮助</td>
 </tr>
 </tbody>
 </table>
-<p>实际传输创建目标文件与 <code>.chathfd</code> 记录，并调用 aria2。预检与传输完成条件见<a href="../configuration/">下载配置</a>。公开仓库以外的登录、Token、wget 和 ModelScope 后端不在当前参数面内。</p>
+<p>自动提问需输入、输出均为 TTY，且 <code>CHATARCH_AUTO_PROMPT</code> 未设为 <code>0/false/no/off</code>；<code>-i</code> 无 TTY 时失败。仅自动补缺失的仓库 ID，<code>-i</code> 还会逐项询问未指定的类型、版本、镜像、目录、过滤、并发与预览/大文件选项，显式选项优先。取消确认不创建下载目录。实际传输创建目标文件与 <code>.chathfd</code> 记录，并调用 aria2。预检与传输完成条件见<a href="../configuration/">下载配置</a>。公开仓库以外的登录、Token、wget 和 ModelScope 后端不在当前参数面内。</p>
 <div class="highlight"><pre><span></span><code>chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flash-Next<span class="w"> </span>--include<span class="w"> </span>config.json<span class="w"> </span>--dry-run
 chathfd<span class="w"> </span>download<span class="w"> </span>MathArena/arxivmath-0926<span class="w"> </span>--repo-type<span class="w"> </span>dataset<span class="w"> </span>--dry-run
 </code></pre></div>

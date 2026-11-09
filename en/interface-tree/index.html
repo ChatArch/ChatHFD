@@ -962,10 +962,11 @@
 <h2 id="from-command-to-files">From command to files</h2>
 <div class="highlight"><pre><span></span><code>chathfd.cli                         # CLI inputs and dispatch
 ├── main                            # --help / --version / --tree / --tree-brief
-├── download REPO_ID
+├── download [REPO_ID] [-i|-I]      # ChatStyle input resolution; manual confirmation
 │   └── chathfd.download.download_repo(...)
 │       ├── fetch_metadata(...)     # Hub model/dataset metadata
 │       ├── selection, path and identity checks
+│       ├── optional confirm callback  # after preflight, before writes
 │       ├── .chathfd/selection.json + urls.txt
 │       └── aria2c                  # concurrency, splits and resume
 └── setup [--install]
@@ -992,9 +993,9 @@
 </tr>
 <tr>
 <td><code>download_repo</code></td>
-<td>repository, endpoint, directory, filters, concurrency and switches</td>
+<td>repository, endpoint, directory, filters, concurrency, switches and optional <code>confirm</code> callback</td>
 <td><code>None</code>; console output</td>
-<td>Writes files and runs aria2 unless dry-run</td>
+<td>Writes files and runs aria2 unless dry-run or confirmation declined</td>
 </tr>
 <tr>
 <td><code>setup_aria2</code></td>
@@ -1013,7 +1014,7 @@
 <p>These are importable functions, not HTTP/MCP services or a persistent task queue. <code>download_repo()</code> reports failures through exceptions such as <code>click.ClickException</code>, not a structured result object.</p>
 <h2 id="ownership">Ownership</h2>
 <ul>
-<li>ChatStyle owns real CLI trees and confirmation interaction.</li>
+<li>ChatStyle owns real CLI trees and reusable opt-in input/confirmation behavior.</li>
 <li>ChatEnv provides the existing schema registration, not Hugging Face login here.</li>
 <li>ChatHFD selects files, pins commits, validates destinations and builds aria2 input.</li>
 <li>aria2 transfers bytes with splits and resume; successful process exit does not replace final size checks.</li>
