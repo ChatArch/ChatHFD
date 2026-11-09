@@ -6,13 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="公开 Hugging Face 模型与数据集下载：镜像、aria2 并发、预检和续传。">
+      
       
       
         <link rel="canonical" href="https://arch.gh.wzhecnu.cn/ChatHFD/en/cli-tree/">
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../quickstart/">
       
+      
+        <link rel="next" href="../python-api/">
       
       
         
@@ -42,12 +46,6 @@
     
     
       
-        
-        
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
-      
     
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
@@ -68,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#cli-tree" class="md-skip">
+        <a href="#cli-tree-and-command-reference" class="md-skip">
           Skip to content
         </a>
       
@@ -80,9 +78,7 @@
     
       
 
-  
-
-<header class="md-header md-header--shadow" data-md-component="header">
+<header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../" title="ChatHFD Documentation" class="md-header__button md-logo" aria-label="ChatHFD Documentation" data-md-component="logo">
       
@@ -167,6 +163,8 @@
         </button>
       </nav>
       
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
@@ -190,7 +188,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
   </div>
   <div class="md-source__repository">
-    GitHub
+    ChatArch/ChatHFD
   </div>
 </a>
       </div>
@@ -203,6 +201,97 @@
       
       
         
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Commands and APIs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../configuration/" class="md-tabs__link">
+          
+  
+  
+  Download Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../capability-map/" class="md-tabs__link">
+          
+  
+  
+  Capabilities
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
           
         
       
@@ -217,8 +306,10 @@
                     
 
 
+  
 
-<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="../" title="ChatHFD Documentation" class="md-nav__button md-logo" aria-label="ChatHFD Documentation" data-md-component="logo">
       
@@ -236,7 +327,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
   </div>
   <div class="md-source__repository">
-    GitHub
+    ChatArch/ChatHFD
   </div>
 </a>
     </div>
@@ -245,6 +336,58 @@
     
       
       
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
   
   
   
@@ -269,9 +412,102 @@
     </li>
   
 
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
     
       
       
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Commands and APIs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Commands and APIs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
   
   
     
@@ -337,10 +573,65 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#download-boundary" class="md-nav__link">
+  <a href="#brief-command-tree" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Download boundary
+        Brief command tree
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complete-command-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complete command tree
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#root-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Root options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#download" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Download action
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Engine preparation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-and-exit-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output and exit behavior
       
     </span>
   </a>
@@ -350,6 +641,272 @@
     </ul>
   
 </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interface-tree/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interface Tree
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Download Guide
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Download Guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capabilities
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Capabilities
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../capability-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capability Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
       
     </li>
   
@@ -382,10 +939,65 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#download-boundary" class="md-nav__link">
+  <a href="#brief-command-tree" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Download boundary
+        Brief command tree
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complete-command-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complete command tree
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#root-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Root options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#download" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Download action
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Engine preparation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-and-exit-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output and exit behavior
       
     </span>
   </a>
@@ -412,23 +1024,166 @@
   
 
 
-<h1 id="cli-tree">CLI Tree</h1>
-<p>This page mirrors the real <code>chathfd --tree</code> output. ChatStyle fixes the public root name to <code>chathfd</code>; <code>--tree-brief</code> only omits command parameter signatures.</p>
-<pre><code class="language-text">chathfd
+<h1 id="cli-tree-and-command-reference">CLI Tree and command reference</h1>
+<p>The complete tree comes from real <code>chathfd --tree</code> output, not a roadmap. Start with the brief view and then inspect each action.</p>
+<h2 id="brief-command-tree">Brief command tree</h2>
+<div class="highlight"><pre><span></span><code>chathfd
+├── --help  # Show this message and exit.
+├── --version  # Show the version and exit.
+├── --tree  # Print the registered CLI tree and exit.
+├── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
+├── download  # Download a public model or dataset with aria2c.
+└── setup  # Check the aria2c download engine and offer installation.
+</code></pre></div>
+<h2 id="complete-command-tree">Complete command tree</h2>
+<div class="highlight"><pre><span></span><code>chathfd
 ├── --help  # Show this message and exit.
 ├── --version  # Show the version and exit.
 ├── --tree  # Print the registered CLI tree and exit.
 ├── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
 ├── download &lt;REPO-ID&gt; [--repo-type REPO-TYPE] [--revision REVISION] [--endpoint ENDPOINT] [--local-dir LOCAL-DIR] [--include INCLUDE] [--exclude EXCLUDE] [--connections CONNECTIONS] [--jobs JOBS] [--dry-run] [--allow-large]  # Download a public model or dataset with aria2c.
 └── setup [--install]  # Check the aria2c download engine and offer installation.
-</code></pre>
-<p>The command line in <code>chathfd --tree-brief</code> is:</p>
-<pre><code class="language-text">├── download  # Download a public model or dataset with aria2c.
-└── setup  # Check the aria2c download engine and offer installation.
-</code></pre>
-<h2 id="download-boundary">Download boundary</h2>
-<p><code>setup</code> checks for <code>aria2c</code> and suggests a package-manager command if missing; <code>setup --install</code> requires explicit confirmation before attempting installation. <code>download</code> supports public Hugging Face models and datasets (<code>--repo-type dataset</code>). The default endpoint is <code>https://hf-mirror.com</code>; <code>HF_ENDPOINT</code> or <code>--endpoint</code> overrides it. Select files with <code>--include</code> / <code>--exclude</code>, preview with <code>--dry-run</code>, and opt in to selections over 10 GiB with <code>--allow-large</code>. <code>--jobs</code> controls concurrent files and <code>--connections</code> connections per file. Verification is by size only; gated/private tokens are not supported. See the <a href="https://github.com/ChatArch/ChatHFD/blob/main/README.en.md#examples">repository README</a> for examples and the ModelScope distinction.</p>
-<p>When updating the CLI, change Click registration and tests first, then rerun <code>chathfd --tree</code> and <code>chathfd --tree-brief</code> to refresh this page and the README.</p>
+</code></pre></div>
+<h2 id="root-options">Root options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Purpose</th>
+<th>Effects</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--help</code></td>
+<td>Help for the current command</td>
+<td>No download</td>
+</tr>
+<tr>
+<td><code>--version</code></td>
+<td>Installed package version</td>
+<td>No download</td>
+</tr>
+<tr>
+<td><code>--tree</code></td>
+<td>Registered tree with parameter signatures</td>
+<td>No download</td>
+</tr>
+<tr>
+<td><code>--tree-brief</code></td>
+<td>Same commands without signatures</td>
+<td>No download</td>
+</tr>
+</tbody>
+</table>
+<h2 id="download">Download action</h2>
+<div class="highlight"><pre><span></span><code>chathfd download REPO_ID [OPTIONS]
+</code></pre></div>
+<p><code>REPO_ID</code> is <code>organization/repository</code>, or a supported legacy single-name Hub repository. Models and datasets share one action; preview is an option, not a subcommand.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--repo-type [model|dataset]</code></td>
+<td><code>model</code></td>
+<td>Repository type</td>
+</tr>
+<tr>
+<td><code>--revision TEXT</code></td>
+<td><code>main</code></td>
+<td>Branch, tag or commit</td>
+</tr>
+<tr>
+<td><code>--endpoint TEXT</code></td>
+<td><code>HF_ENDPOINT</code> or HF-Mirror</td>
+<td>Compatible HTTPS origin; explicit option wins</td>
+</tr>
+<tr>
+<td><code>--local-dir DIRECTORY</code></td>
+<td>Current-directory <code>models/</code> or <code>datasets/</code> + repo ID</td>
+<td>Selected file output root</td>
+</tr>
+<tr>
+<td><code>--include TEXT</code></td>
+<td>All files</td>
+<td>Repeatable include glob</td>
+</tr>
+<tr>
+<td><code>--exclude TEXT</code></td>
+<td>None</td>
+<td>Repeatable exclude glob</td>
+</tr>
+<tr>
+<td><code>--connections INTEGER</code></td>
+<td><code>4</code>, range 1–10</td>
+<td>Connections/splits per file</td>
+</tr>
+<tr>
+<td><code>--jobs INTEGER</code></td>
+<td><code>5</code>, range 1–10</td>
+<td>Concurrent files</td>
+</tr>
+<tr>
+<td><code>--dry-run</code></td>
+<td>Off</td>
+<td>Query and list files/sizes without creating download files</td>
+</tr>
+<tr>
+<td><code>--allow-large</code></td>
+<td>Off</td>
+<td>Permit transfer of a selection over 10 GiB</td>
+</tr>
+<tr>
+<td><code>--help</code></td>
+<td>—</td>
+<td>Show action help only</td>
+</tr>
+</tbody>
+</table>
+<p>An actual transfer writes files and <code>.chathfd</code> records and invokes aria2. See <a href="../configuration/">Configuration</a> for preflight and completion conditions. Login, token forwarding, wget and native ModelScope are outside the implemented option surface.</p>
+<div class="highlight"><pre><span></span><code>chathfd<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3.8-Flash-Next<span class="w"> </span>--include<span class="w"> </span>config.json<span class="w"> </span>--dry-run
+chathfd<span class="w"> </span>download<span class="w"> </span>MathArena/arxivmath-0926<span class="w"> </span>--repo-type<span class="w"> </span>dataset<span class="w"> </span>--dry-run
+</code></pre></div>
+<h2 id="setup">Engine preparation</h2>
+<div class="highlight"><pre><span></span><code>chathfd setup [--install] [--help]
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No options</td>
+<td>Check aria2c; print path when present or installation guidance otherwise</td>
+</tr>
+<tr>
+<td><code>--install</code></td>
+<td>If missing, show the proposed command and require confirmation before a package-manager call</td>
+</tr>
+<tr>
+<td><code>--help</code></td>
+<td>Show help without installation</td>
+</tr>
+</tbody>
+</table>
+<p>An existing aria2c is not reinstalled. This does not install external <code>hfd.sh</code>, launch a daemon or persist endpoint/output settings. Installation does not proceed without confirmation; manager errors fail nonzero.</p>
+<h2 id="output-and-exit-behavior">Output and exit behavior</h2>
+<ul>
+<li>Successful preview or verified download exits 0 and prints selection information; completed transfer adds size-verification output.</li>
+<li>Invalid input, failed network/metadata or incomplete transfer fails nonzero. A start message is not a completion receipt.</li>
+<li>Setup can exit normally after detecting or suggesting installation. Exit 0 alone does not prove a missing engine was installed; require <code>aria2c ready</code> and the executable.</li>
+<li>No extra <code>model</code>, <code>dataset</code>, <code>login</code> or <code>mirror</code> subcommands exist. Legacy <code>hfd</code> flags are not current options.</li>
+</ul>
+<p><a href="../quickstart/">Quickstart</a> · <a href="../python-api/">Python API</a> · <a href="../troubleshooting/">Legacy comparison</a></p>
 
 
 
@@ -448,6 +1203,12 @@
           
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
         
       </main>
       
@@ -478,7 +1239,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "toc.follow", "search.suggest", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>

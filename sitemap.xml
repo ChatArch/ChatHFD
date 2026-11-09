@@ -2,30 +2,114 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
         <loc>https://arch.gh.wzhecnu.cn/ChatHFD/</loc>
-        <lastmod>2026-11-08</lastmod>
+        <lastmod>2026-11-09</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="https://arch.gh.wzhecnu.cn/ChatHFD/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://arch.gh.wzhecnu.cn/ChatHFD/en/"/>
+    </url>
+    <url>
+        <loc>https://arch.gh.wzhecnu.cn/ChatHFD/capability-map/</loc>
+        <lastmod>2026-11-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://arch.gh.wzhecnu.cn/ChatHFD/capability-map/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arch.gh.wzhecnu.cn/ChatHFD/en/capability-map/"/>
     </url>
     <url>
         <loc>https://arch.gh.wzhecnu.cn/ChatHFD/cli-tree/</loc>
-        <lastmod>2026-11-08</lastmod>
+        <lastmod>2026-11-09</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="https://arch.gh.wzhecnu.cn/ChatHFD/cli-tree/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://arch.gh.wzhecnu.cn/ChatHFD/en/cli-tree/"/>
     </url>
     <url>
+        <loc>https://arch.gh.wzhecnu.cn/ChatHFD/configuration/</loc>
+        <lastmod>2026-11-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://arch.gh.wzhecnu.cn/ChatHFD/configuration/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arch.gh.wzhecnu.cn/ChatHFD/en/configuration/"/>
+    </url>
+    <url>
+        <loc>https://arch.gh.wzhecnu.cn/ChatHFD/interface-tree/</loc>
+        <lastmod>2026-11-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://arch.gh.wzhecnu.cn/ChatHFD/interface-tree/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arch.gh.wzhecnu.cn/ChatHFD/en/interface-tree/"/>
+    </url>
+    <url>
+        <loc>https://arch.gh.wzhecnu.cn/ChatHFD/python-api/</loc>
+        <lastmod>2026-11-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://arch.gh.wzhecnu.cn/ChatHFD/python-api/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arch.gh.wzhecnu.cn/ChatHFD/en/python-api/"/>
+    </url>
+    <url>
+        <loc>https://arch.gh.wzhecnu.cn/ChatHFD/quickstart/</loc>
+        <lastmod>2026-11-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://arch.gh.wzhecnu.cn/ChatHFD/quickstart/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arch.gh.wzhecnu.cn/ChatHFD/en/quickstart/"/>
+    </url>
+    <url>
+        <loc>https://arch.gh.wzhecnu.cn/ChatHFD/troubleshooting/</loc>
+        <lastmod>2026-11-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://arch.gh.wzhecnu.cn/ChatHFD/troubleshooting/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arch.gh.wzhecnu.cn/ChatHFD/en/troubleshooting/"/>
+    </url>
+    <url>
         <loc>https://arch.gh.wzhecnu.cn/ChatHFD/en/</loc>
-        <lastmod>2026-11-08</lastmod>
+        <lastmod>2026-11-09</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://arch.gh.wzhecnu.cn/ChatHFD/en/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="https://arch.gh.wzhecnu.cn/ChatHFD/"/>
     </url>
     <url>
+        <loc>https://arch.gh.wzhecnu.cn/ChatHFD/en/capability-map/</loc>
+        <lastmod>2026-11-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arch.gh.wzhecnu.cn/ChatHFD/en/capability-map/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://arch.gh.wzhecnu.cn/ChatHFD/capability-map/"/>
+    </url>
+    <url>
         <loc>https://arch.gh.wzhecnu.cn/ChatHFD/en/cli-tree/</loc>
-        <lastmod>2026-11-08</lastmod>
+        <lastmod>2026-11-09</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://arch.gh.wzhecnu.cn/ChatHFD/en/cli-tree/"/>
         <xhtml:link rel="alternate" hreflang="zh" href="https://arch.gh.wzhecnu.cn/ChatHFD/cli-tree/"/>
+    </url>
+    <url>
+        <loc>https://arch.gh.wzhecnu.cn/ChatHFD/en/configuration/</loc>
+        <lastmod>2026-11-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arch.gh.wzhecnu.cn/ChatHFD/en/configuration/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://arch.gh.wzhecnu.cn/ChatHFD/configuration/"/>
+    </url>
+    <url>
+        <loc>https://arch.gh.wzhecnu.cn/ChatHFD/en/interface-tree/</loc>
+        <lastmod>2026-11-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arch.gh.wzhecnu.cn/ChatHFD/en/interface-tree/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://arch.gh.wzhecnu.cn/ChatHFD/interface-tree/"/>
+    </url>
+    <url>
+        <loc>https://arch.gh.wzhecnu.cn/ChatHFD/en/python-api/</loc>
+        <lastmod>2026-11-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arch.gh.wzhecnu.cn/ChatHFD/en/python-api/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://arch.gh.wzhecnu.cn/ChatHFD/python-api/"/>
+    </url>
+    <url>
+        <loc>https://arch.gh.wzhecnu.cn/ChatHFD/en/quickstart/</loc>
+        <lastmod>2026-11-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arch.gh.wzhecnu.cn/ChatHFD/en/quickstart/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://arch.gh.wzhecnu.cn/ChatHFD/quickstart/"/>
+    </url>
+    <url>
+        <loc>https://arch.gh.wzhecnu.cn/ChatHFD/en/troubleshooting/</loc>
+        <lastmod>2026-11-09</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://arch.gh.wzhecnu.cn/ChatHFD/en/troubleshooting/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://arch.gh.wzhecnu.cn/ChatHFD/troubleshooting/"/>
     </url>
 </urlset>
