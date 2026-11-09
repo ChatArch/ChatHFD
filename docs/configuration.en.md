@@ -45,6 +45,30 @@ The endpoint must be an HTTPS origin without userinfo, path, query or fragment. 
 
 ModelScope is not an interchangeable `HF_ENDPOINT`. It has separate repository IDs, availability and an SDK; ChatHFD has no ModelScope backend. Legacy token flags do not add authentication to the current downloader.
 
+## ChatEnv download root {#download-root}
+
+From0.1.6, non-sensitive `CHATHFD_DOWNLOAD_ROOT` defaults to `.` and is resolved against the invocation directory on every call. Models and datasets use `<root>/<organization>/<repository>`, without an extra models/datasets layer. Relative paths and `~` work; another machine's mount layout is never inferred.
+
+| Source | Priority | Meaning |
+| --- | --- | --- |
+| `--local-dir` / Python `local_dir` | Highest | Exact final directory, no repo suffix; bypasses invalid lower-priority configuration |
+| Process `CHATHFD_DOWNLOAD_ROOT` | Next | Root plus repo ID; an empty string explicitly selects cwd |
+| Same key in active ChatEnv profile | Next | Same root rule |
+| Default `.` | Last | `<cwd>/<organization>/<repository>`, not the install location |
+
+Use ChatEnv in the same Python environment as ChatHFD so its provider is discoverable:
+
+```bash
+chatenv set CHATHFD_DOWNLOAD_ROOT=/data/hub -I
+chatenv list -t chathfd
+chatenv test -t chathfd -I
+CHATHFD_DOWNLOAD_ROOT=./cache chathfd download Qwen/Qwen3.8-Flash-Next --include config.json --dry-run -I
+```
+
+This reuses the `chathfd` provider and `Chathfd` storage namespace. Downloads only read configuration; they never save a variable automatically. The provider test validates the effective root without network calls or creating directories. `-i` displays the effective final destination as the path default. For shared storage, use a directory accessible on the current host, not an NFS `server:/export` specification; the tool never remounts or guesses. Use the appropriate active profile, process root or exact directory when models/datasets need separate roots.
+
+Version0.1.5 and earlier used `./models/<repo_id>` and `./datasets/<repo_id>`. Existing files are not migrated; explicit `--local-dir` semantics stay unchanged. Legacy scaffold `CHATHFD_API_KEY` is not downloader authentication and need not be filled.
+
 ## File selection and concurrency {#selection}
 
 ```bash
@@ -61,7 +85,7 @@ chathfd download Qwen/Qwen3.8-Flash-Next \
 
 ## Output and resume identity {#resume}
 
-Without `--local-dir`, models use `./models/<org>/<repo>` and datasets `./datasets/<org>/<repo>`, relative to the invocation directory. This is not the standard Hugging Face cache layout and does not infer another machine's shared-storage paths.
+Without `--local-dir`, the precedence above produces `<download-root>/<repo_id>`. The selected root itself may be a directory alias, but repository components cannot resolve outside it; an explicit final directory remains an intentional override. This is not the standard Hugging Face cache layout and does not infer another machine's shared paths.
 
 ```text
 <destination>/

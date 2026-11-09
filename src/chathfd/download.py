@@ -133,6 +133,20 @@ def _check_selection(root: Path, files: list[tuple[str, int]], identity: dict) -
         raise click.ClickException("Existing files have no matching download selection; choose a fresh destination")
 
 
+def resolve_download_directory(repo_id: str, local_dir: Path | None = None) -> Path:
+    """Return the exact explicit directory or configured-root/repository path."""
+    from chathfd.config import resolve_download_root, _directory_path
+
+    parts = _parts(repo_id, _ID_PART, "repository ID")
+    if local_dir is not None:
+        return _directory_path(local_dir, "--local-dir")
+    base = resolve_download_root()
+    destination = _directory_path(base.joinpath(*parts), "Download directory")
+    if not destination.is_relative_to(base):
+        raise click.ClickException("Repository destination escapes the configured download root")
+    return destination
+
+
 def download_repo(
     repo_id: str, repo_type: str, revision: str, endpoint: str, local_dir: Path | None,
     includes: tuple[str, ...], excludes: tuple[str, ...], connections: int, jobs: int,
@@ -141,7 +155,7 @@ def download_repo(
     repo_parts = _parts(repo_id, _ID_PART, "repository ID")
     _parts(revision, _REV_PART, "revision")
     endpoint = _endpoint(endpoint)
-    root = local_dir or Path.cwd().joinpath(repo_type + "s", *repo_parts)
+    root = resolve_download_directory(repo_id, local_dir)
     metadata = fetch_metadata(endpoint, repo_id, repo_type, revision)
     files = _selected_files(metadata, includes, excludes)
     commit = metadata.get("sha")

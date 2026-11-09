@@ -76,13 +76,27 @@ The example is a metadata-only preview. Set `dry_run=False` to write files. For 
 | --- | --- |
 | `repo_id`, `repo_type`, `revision` | Strings; type is `model` or `dataset` |
 | `endpoint` | Explicit compatible HTTPS origin; not loaded from the environment |
-| `local_dir` | `Path` or `None`; `None` uses the current-directory layout |
+| `local_dir` | `Path` or `None`; explicit value is the final directory, `None` uses process/ChatEnv/cwd root + repo ID |
 | `includes`, `excludes` | `tuple[str, ...]` |
 | `connections`, `jobs` | Integers; Python callers should retain the CLI's 1–10 range |
 | `dry_run`, `allow_large` | Booleans |
 | `confirm` | Optional keyword-only callback `(file_count: int, total_bytes: int) -> bool`; `None` does not prompt, refusal aborts before any file writes |
 
 The function returns `None` and uses Click output. Metadata/transfer failures raise `click.ClickException`; a declined callback raises `click.Abort`. Filesystem failures can raise `OSError`. `confirm` lets the caller opt into a decision after preflight; the Python API does not force interaction. It is not a silent background API or a structured file-result service.
+
+## Directory resolution {#directory}
+
+Directory resolution is reusable without creating directories or network calls:
+
+```python
+from chathfd.config import resolve_download_root
+from chathfd.download import resolve_download_directory
+
+print(resolve_download_root())
+print(resolve_download_directory("Example/repository"))
+```
+
+`resolve_download_directory(repo_id, local_dir=None)` appends the repo ID by default; an explicit `local_dir` overrides the exact final destination. The CLI and `download_repo()` share this logic and use the same provider namespace.
 
 ## Check the engine {#setup}
 

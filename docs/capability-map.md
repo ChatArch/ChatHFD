@@ -34,6 +34,7 @@
 | --- | --- | --- |
 | 模型与数据集 | `download`、`--repo-type` | 仅公开仓库文件，不启动训练或推理 |
 | 兼容镜像 | `--endpoint`、`HF_ENDPOINT` | 默认 HF-Mirror，无自动跨平台回退 |
+| 下载根目录 | `CHATHFD_DOWNLOAD_ROOT`、ChatEnv、`--local-dir` | 根默认当前目录，追加repo ID；显式local-dir是最终目录；不自动配置共享盘 |
 | 并发与续传 | `--connections`、`--jobs` | 需本机 aria2，目录身份须匹配 |
 | 文件和体量预检 | `--include`、`--exclude`、`--dry-run` | 元数据检查，不是网络硬限额 |
 | 下载器准备 | `setup [--install]` | 安装是显式、需确认的系统包操作 |
@@ -43,7 +44,7 @@
 
 - Hugging Face 私有或 gated 仓库登录、Token 管理及转发。
 - ModelScope 原生下载、wget 后端、旧 `hfd` 别名自动替换。
-- 全局缓存目录管理、跨机器挂载、下载任务队列、后台守护进程。
+- Hugging Face标准缓存迁移或旧目录自动接管、跨机器挂载、下载任务队列、后台守护进程。
 - 上游加密哈希验收、模型推理验证或数据集训练流水线。
 
 不要把单个配置文件或 README 的成功下载称为“模型权重已经下载完成”。查看[快速开始](quickstart.md#model)区分小样例和完整仓库。

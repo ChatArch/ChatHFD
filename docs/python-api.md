@@ -76,13 +76,27 @@ except click.ClickException as exc:
 | --- | --- |
 | `repo_id`、`repo_type`、`revision` | 字符串；类型用 `model` 或 `dataset` |
 | `endpoint` | Hugging Face 兼容 HTTPS origin；显式传入，不自动读环境变量 |
-| `local_dir` | `Path` 或 `None`；`None` 使用当前目录下的默认布局 |
+| `local_dir` | `Path` 或 `None`；显式值是最终目录，`None`使用进程变量/ChatEnv/当前目录根 + repo ID |
 | `includes`、`excludes` | `tuple[str, ...]` |
 | `connections`、`jobs` | 整数；Python 调用方应使用与 CLI 相同的 1–10 范围 |
 | `dry_run`、`allow_large` | 布尔值 |
 | `confirm` | 可选仅关键字回调 `(文件数: int, 总字节数: int) -> bool`；默认 `None` 不提问，拒绝时在任何文件写入前中止 |
 
 函数返回 `None`，状态通过 Click 输出。元数据/下载失败会抛出 `click.ClickException`，回调拒绝则抛出 `click.Abort`；本地文件系统失败还可能抛出 `OSError`。`confirm` 用于调用端选择是否在预检后确认，不会因为 Python API 被调用就强制交互。它不是静默后台下载 API，暂不返回文件清单结果对象。
+
+## 目录解析 {#directory}
+
+目录解析可直接复用，不创建目录或请求网络：
+
+```python
+from chathfd.config import resolve_download_root
+from chathfd.download import resolve_download_directory
+
+print(resolve_download_root())
+print(resolve_download_directory("Example/repository"))
+```
+
+`resolve_download_directory(repo_id, local_dir=None)`默认追加repo ID；显式`local_dir`优先并作为最终目录。CLI和`download_repo()`共享此逻辑，不读取其他命名空间的配置。
 
 ## 检查下载器 {#setup}
 

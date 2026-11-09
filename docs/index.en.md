@@ -68,7 +68,7 @@ Download public Hugging Face repositories with one command. HF-Mirror is the def
 ## Minimal working path
 
 ```bash
-pip install ChatHFD==0.1.5
+pip install ChatHFD==0.1.6
 chathfd setup
 chathfd download Qwen/Qwen3.8-Flash-Next --include config.json --dry-run
 ```

@@ -43,6 +43,14 @@ def test_tree_page_contains_both_actual_runtime_trees(suffix):
                     assert option in text
 
 
+@pytest.mark.parametrize("suffix", (".md", ".en.md"))
+def test_documented_explicit_heading_anchors_are_unique(suffix):
+    for page in PAGES:
+        text=(ROOT/"docs"/(page+suffix)).read_text(encoding="utf-8")
+        ids=re.findall(r"(?m)^#+.*\{#([^}]+)\}",text)
+        assert len(ids)==len(set(ids)),page+suffix
+
+
 def test_install_examples_pin_the_source_version():
     for name in ("README.md", "README.en.md", "docs/index.md", "docs/index.en.md", "docs/quickstart.md", "docs/quickstart.en.md"):
         text = (ROOT / name).read_text(encoding="utf-8")
@@ -66,9 +74,13 @@ def test_documented_cli_examples_parse_without_invocation(page, suffix, monkeypa
     for block in re.findall(r"```bash\n(.*?)```", text, re.S):
         for line in block.replace("\\\n", " ").splitlines():
             tokens = shlex.split(line, comments=True)
-            if "chathfd" not in tokens:
+            # Only parse the executable, not a type argument in e.g.
+            # `chatenv test -t chathfd -I`. Permit leading shell assignments.
+            while tokens and re.match(r"^[A-Za-z_][A-Za-z0-9_]*=", tokens[0]):
+                tokens = tokens[1:]
+            if not tokens or tokens[0] != "chathfd":
                 continue
-            args = tokens[tokens.index("chathfd") + 1:]
+            args = tokens[1:]
             try:
                 if args and args[0] in main.commands:
                     command = main.commands[args[0]]

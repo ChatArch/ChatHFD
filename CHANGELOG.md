@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-09 - 0.1.6
+
+- Add non-sensitive ChatEnv `CHATHFD_DOWNLOAD_ROOT`, using process env before the existing active provider profile and invocation cwd fallback. Real configuration remains manual.
+- Change the implicit layout from models/datasets + repo ID to `<root>/<repo_id>`; default root is cwd. Explicit `--local-dir` stays an exact final directory and overrides invalid lower-priority roots.
+- Share importable directory resolution across CLI/Python, validate before metadata, show the effective interactive default, and reject implicit repository symlink escapes/control characters.
+- Replace the schema-only provider test with read-only effective-root validation. Update bilingual configuration/CLI/API guidance and isolated profile/precedence/safety tests; do not manage mounts or adopt unknown legacy files.
+
 ## 2026-11-09 - 0.1.5
 
 - Added optional ChatStyle `-i/-I` input handling for downloads. A missing repository ID prompts only on a usable TTY, while `-I` fails fast without changing normal transfer semantics.
