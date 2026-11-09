@@ -1,0 +1,4 @@
+include README.md README.en.md CHANGELOG.md DEVELOP.md AGENTS.md mkdocs.yml
+recursive-include docs *.md
+include scripts/preserve_docs_preview.py
+recursive-include tests *.py *.md

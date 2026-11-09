@@ -9,14 +9,27 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: docs-pages-${{ github.repository }}
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Configure Git Credentials
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
       - run: python -m pip install --upgrade pip
       - run: python -m pip install -e ".[docs]"
-      - run: mkdocs gh-deploy --force
+      - name: Build production and preserve dev preview
+        run: |
+          mkdocs build --strict
+          git fetch origin gh-pages:refs/remotes/origin/gh-pages
+          python scripts/preserve_docs_preview.py --site-dir site
+          ghp-import --no-jekyll --push --force site

@@ -9,14 +9,25 @@
 
 ChatHFD 是 ChatArch 的 Hugging Face 模型与数据集下载工具。要求 Python 3.10+ 和 `aria2c`；只支持公开仓库，不在命令行传递 Token。
 
+## 文档导航
+
+| 你要做什么 | 文档入口 |
+| --- | --- |
+| 第一次安装与下载 | [快速开始](https://arch.gh.wzhecnu.cn/ChatHFD/quickstart/) |
+| 查看全部命令、参数与默认值 | [完整 CLI 树](https://arch.gh.wzhecnu.cn/ChatHFD/cli-tree/) |
+| 配置镜像、目录和续传 | [下载配置](https://arch.gh.wzhecnu.cn/ChatHFD/configuration/) |
+| 从 Python 调用 | [Python 接口](https://arch.gh.wzhecnu.cn/ChatHFD/python-api/)与[接口树](https://arch.gh.wzhecnu.cn/ChatHFD/interface-tree/) |
+| 查看当前支持范围 | [能力地图](https://arch.gh.wzhecnu.cn/ChatHFD/capability-map/) |
+| 解决失败或对照旧参数 | [故障排查](https://arch.gh.wzhecnu.cn/ChatHFD/troubleshooting/) |
+
 ## 下载示例
 
 ```bash
-pip install ChatHFD==0.1.3
+pip install ChatHFD==0.1.4
 chathfd --tree
 chathfd setup  # 检查 aria2c；未安装时提示命令
 # 如确需安装：chathfd setup --install（还需确认）
-# 先预检最新 Qwen 通用开放权重系列（此仓库约 360 GB，不要直接全量下载）
+# 先预检 Qwen 模型中的小文件，不直接全量下载权重
 chathfd download Qwen/Qwen3.8-Flash-Next --include config.json --dry-run
 chathfd download Qwen/Qwen3.8-Flash-Next --include config.json --local-dir ./models/qwen-sample
 # 数学数据集：约 246 KB，包含 README、元数据和一个 Parquet 分片
