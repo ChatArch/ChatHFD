@@ -1,6 +1,6 @@
 # CLI 树与命令参考
 
-完整树来自真实 `chathfd --tree`，不是规划中的命令。参数很多时，先看简明树，再进入对应动作。
+完整树来自真实 `chathfd --tree`，不是规划中的命令；交互选项从0.1.5起提供。参数很多时，先看简明树，再进入对应动作。
 
 ## 简明命令树
 
@@ -22,7 +22,7 @@ chathfd
 ├── --version  # Show the version and exit.
 ├── --tree  # Print the registered CLI tree and exit.
 ├── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
-├── download <REPO-ID> [--repo-type REPO-TYPE] [--revision REVISION] [--endpoint ENDPOINT] [--local-dir LOCAL-DIR] [--include INCLUDE] [--exclude EXCLUDE] [--connections CONNECTIONS] [--jobs JOBS] [--dry-run] [--allow-large]  # Download a public model or dataset with aria2c.
+├── download [REPO-ID] [--repo-type REPO-TYPE] [--revision REVISION] [--endpoint ENDPOINT] [--local-dir LOCAL-DIR] [--include INCLUDE] [--exclude EXCLUDE] [--connections CONNECTIONS] [--jobs JOBS] [--dry-run] [--allow-large] [--interactive]  # Download a public model or dataset with aria2c.
 └── setup [--install]  # Check the aria2c download engine and offer installation.
 ```
 
@@ -38,10 +38,10 @@ chathfd
 ## 下载动作 {#download}
 
 ```text
-chathfd download REPO_ID [OPTIONS]
+chathfd download [REPO_ID] [OPTIONS] [-i|-I]
 ```
 
-`REPO_ID` 为 `组织/仓库`，也接受 Hub 支持的单段旧仓库名。模型和数据集共用同一个动作；预览是选项，不是另一个子命令。
+`REPO_ID` 为 `组织/仓库`，也接受 Hub 支持的单段旧仓库名。模型和数据集共用同一个动作；预览是选项，不是另一个子命令。`REPO_ID` 仅在可交互终端缺参时才提问；`-I` 缺参立即报错。完整树显示的是 Click 注册名 `[--interactive]`，命令帮助中另有短选项 `-i/-I`。
 
 | 参数 | 默认值 | 含义 |
 | --- | --- | --- |
@@ -55,9 +55,11 @@ chathfd download REPO_ID [OPTIONS]
 | `--jobs INTEGER` | `5`，范围 1–10 | 同时下载的文件数 |
 | `--dry-run` | 关闭 | 查询并列出文件/大小，不创建下载文件 |
 | `--allow-large` | 关闭 | 允许所选文件超过 10 GiB 后实际传输 |
+| `-i` / `--interactive` | 自动 | 强制进入交互，逐项询问尚未提供的下载参数；实际传输前展示文件清单并二次确认 |
+| `-I` / `--no-interactive` | 自动 | 禁止提问；必需参数不足时失败，参数完整时照常下载，不等于 `--dry-run` |
 | `--help` | — | 仅显示本动作帮助 |
 
-实际传输创建目标文件与 `.chathfd` 记录，并调用 aria2。预检与传输完成条件见[下载配置](configuration.md)。公开仓库以外的登录、Token、wget 和 ModelScope 后端不在当前参数面内。
+自动提问需输入、输出均为 TTY，且 `CHATARCH_AUTO_PROMPT` 未设为 `0/false/no/off`；`-i` 无 TTY 时失败。仅自动补缺失的仓库 ID，`-i` 还会逐项询问未指定的类型、版本、镜像、目录、过滤、并发与预览/大文件选项，显式选项优先。取消确认不创建下载目录。实际传输创建目标文件与 `.chathfd` 记录，并调用 aria2。预检与传输完成条件见[下载配置](configuration.md)。公开仓库以外的登录、Token、wget 和 ModelScope 后端不在当前参数面内。
 
 ```bash
 chathfd download Qwen/Qwen3.8-Flash-Next --include config.json --dry-run

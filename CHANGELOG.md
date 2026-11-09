@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-09 - 0.1.5
+
+- Added optional ChatStyle `-i/-I` input handling for downloads. A missing repository ID prompts only on a usable TTY, while `-I` fails fast without changing normal transfer semantics.
+- Forced interaction can fill unspecified options. Metadata selection is shown before the user confirms transfer; refusal leaves the destination untouched. `--dry-run` remains the only preview-only flag.
+- Reuse ChatStyle0.2.1 `CommandField.param_type` for choice, directory and concurrency validation instead of package-local numeric converters.
+
 ## 2026-11-09 - 0.1.4
 
 ### 文档

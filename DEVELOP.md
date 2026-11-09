@@ -2,7 +2,7 @@
 
 ## CLI Rules
 
-- Use `chatstyle>=0.2.0,<0.3.0` and `chatenv>=0.2.10,<0.3.0` as the canonical CLI interaction runtime.
+- Use `chatstyle>=0.2.1,<0.3.0` and `chatenv>=0.2.10,<0.3.0` as the canonical CLI interaction runtime.
 - Attach `chatstyle.add_tree_option` to the top-level Click group with the canonical `chathfd` root name.
 - Keep `--tree` as the detailed tree with command parameter signatures and `--tree-brief` as the signature-free view.
 - Prefer `CommandSchema`, `CommandField`, `add_interactive_option()`, and `resolve_command_inputs()` for new commands.

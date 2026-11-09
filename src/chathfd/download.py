@@ -8,6 +8,7 @@ import re
 import shutil
 import subprocess
 from pathlib import Path, PurePosixPath
+from typing import Callable
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlsplit
 from urllib.request import urlopen
@@ -135,7 +136,7 @@ def _check_selection(root: Path, files: list[tuple[str, int]], identity: dict) -
 def download_repo(
     repo_id: str, repo_type: str, revision: str, endpoint: str, local_dir: Path | None,
     includes: tuple[str, ...], excludes: tuple[str, ...], connections: int, jobs: int,
-    dry_run: bool, allow_large: bool,
+    dry_run: bool, allow_large: bool, *, confirm: Callable[[int, int], bool] | None = None,
 ) -> None:
     repo_parts = _parts(repo_id, _ID_PART, "repository ID")
     _parts(revision, _REV_PART, "revision")
@@ -164,6 +165,8 @@ def download_repo(
         "files": sorted([name, size] for name, size in files),
     }
     _check_selection(root, files, identity)
+    if confirm is not None and not confirm(len(files), total):
+        raise click.Abort()
     if not shutil.which("aria2c"):
         raise click.ClickException("aria2c is required; run chathfd setup for instructions or chathfd setup --install")
     control = root / ".chathfd"

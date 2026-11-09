@@ -43,7 +43,7 @@
 在自己的 Python 虚拟环境中安装，不需要修改系统 Python：
 
 ```bash
-python -m pip install ChatHFD==0.1.4
+python -m pip install ChatHFD==0.1.5
 chathfd --version
 chathfd --tree
 chathfd setup
@@ -66,6 +66,19 @@ chathfd download Qwen/Qwen3.8-Flash-Next \
 ```
 
 输出包含仓库类型、请求版本、固定 commit、选中文件、字节数和目标路径。`--dry-run` 不创建下载目录，也不要求 aria2c 已安装。
+
+### 人工输入与脚本
+
+从0.1.5起可在终端运行 `chathfd download -i`，按提示输入仓库、类型、目录、过滤和并发等；交互下载会先列出文件与总量，确认后才传输。只想预检时显式传 `--dry-run`。缺少仓库 ID 时，若输入/输出都是 TTY 且 `CHATARCH_AUTO_PROMPT` 未关闭，也只会自动询问仓库 ID，后续沿用默认值。
+
+```bash
+# 人工逐项填写（真正传输前还需确认）
+chathfd download -i
+# CI/脚本：禁止提问，但 -I 本身不是 dry-run
+chathfd download Qwen/Qwen3.8-Flash-Next --include config.json --dry-run -I
+```
+
+`-I` 缺仓库 ID 时直接失败；`-i` 没有 TTY 时也直接失败。若要屏蔽自动提问，设置 `CHATARCH_AUTO_PROMPT=0`。此交互功能从0.1.5起提供，范围/选择/路径转换由ChatStyle0.2.1统一校验。
 
 ## 3. 下载模型配置文件 {#model}
 

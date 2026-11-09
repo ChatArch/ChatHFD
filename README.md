@@ -9,6 +9,8 @@
 
 ChatHFD 是 ChatArch 的 Hugging Face 模型与数据集下载工具。要求 Python 3.10+ 和 `aria2c`；只支持公开仓库，不在命令行传递 Token。
 
+从0.1.5起，`download`按需接入ChatStyle共享输入解析与类型校验，支持`-i/-I`；`-I`禁止提问但不是dry-run。
+
 ## 文档导航
 
 | 你要做什么 | 文档入口 |
@@ -23,7 +25,7 @@ ChatHFD 是 ChatArch 的 Hugging Face 模型与数据集下载工具。要求 Py
 ## 下载示例
 
 ```bash
-pip install ChatHFD==0.1.4
+pip install ChatHFD==0.1.5
 chathfd --tree
 chathfd setup  # 检查 aria2c；未安装时提示命令
 # 如确需安装：chathfd setup --install（还需确认）
@@ -51,7 +53,7 @@ chathfd
 ├── --version  # Show the version and exit.
 ├── --tree  # Print the registered CLI tree and exit.
 ├── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
-├── download <REPO-ID> [--repo-type REPO-TYPE] [--revision REVISION] [--endpoint ENDPOINT] [--local-dir LOCAL-DIR] [--include INCLUDE] [--exclude EXCLUDE] [--connections CONNECTIONS] [--jobs JOBS] [--dry-run] [--allow-large]  # Download a public model or dataset with aria2c.
+├── download [REPO-ID] [--repo-type REPO-TYPE] [--revision REVISION] [--endpoint ENDPOINT] [--local-dir LOCAL-DIR] [--include INCLUDE] [--exclude EXCLUDE] [--connections CONNECTIONS] [--jobs JOBS] [--dry-run] [--allow-large] [--interactive]  # Download a public model or dataset with aria2c.
 └── setup [--install]  # Check the aria2c download engine and offer installation.
 ```
 
